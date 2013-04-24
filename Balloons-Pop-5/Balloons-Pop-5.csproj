@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Balloons.cs" />
-    <Compile Include="IChangable.cs" />
+    <Compile Include="IChangeable.cs" />
     <Compile Include="PlayField.cs" />
     <Compile Include="ScoreBoard.cs" />
     <Compile Include="StringExtensions.cs" />

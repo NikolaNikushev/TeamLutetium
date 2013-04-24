@@ -5,7 +5,7 @@ namespace BalloonsPop5Game
 {
     class Balloons
     {
-        static byte[,] GenerateLevel(byte rows, byte columns)
+        static byte[,] GenerateField(byte rows, byte columns)
         {
             PrintInstructions();
             byte[,] randomField = new byte[rows, columns];
@@ -215,40 +215,40 @@ namespace BalloonsPop5Game
             Console.WriteLine();
         }
 
-        private static void PrintLevel(byte[,] level)
+        private static void PrintField(byte[,] field)
         {
             //Console.Clear();
             Console.Write("    ");
-            for (byte column = 0; column < level.GetLongLength(1); column++)
+            for (byte column = 0; column < field.GetLongLength(1); column++)
             {
                 Console.Write(column + " ");
             }
 
             Console.Write("\n   ");
-            for (byte column = 0; column < level.GetLongLength(1) * 2 + 1; column++)
+            for (byte column = 0; column < field.GetLongLength(1) * 2 + 1; column++)
             {
                 Console.Write("-");
             }
 
             Console.WriteLine();
 
-            for (byte i = 0; i < level.GetLongLength(0); i++)
+            for (byte i = 0; i < field.GetLongLength(0); i++)
             {
                 Console.Write(i + " | ");
-                for (byte j = 0; j < level.GetLongLength(1); j++)
+                for (byte j = 0; j < field.GetLongLength(1); j++)
                 {
-                    if (level[i, j] == 0)
+                    if (field[i, j] == 0)
                     {
                         Console.Write("  ");
                         continue;
                     }
-                    Console.Write(level[i, j] + " ");
+                    Console.Write(field[i, j] + " ");
                 }
                 Console.Write("| ");
                 Console.WriteLine();
             }
             Console.Write("   ");
-            for (byte column = 0; column < level.GetLongLength(1) * 2 + 1; column++)
+            for (byte column = 0; column < field.GetLongLength(1) * 2 + 1; column++)
             {
                 Console.Write("-");
             }
@@ -257,9 +257,9 @@ namespace BalloonsPop5Game
 
         static void Main(string[] args)
         {
-            string[,] topFive = new string[5, 2];
-            byte[,] level = GenerateLevel(5, 10);
-            PrintLevel(level);
+            string[,] topFiveWinnersChart = new string[5, 2];
+            byte[,] field = GenerateField(5, 10);
+            PrintField(field);
 
             string commandInput = null;
             int userMoves = 0;
@@ -274,13 +274,13 @@ namespace BalloonsPop5Game
                 switch (commandInput)
                 {
                     case "RESTART":
-                        level = GenerateLevel(5, 10);
-                        PrintLevel(level);
+                        field = GenerateField(5, 10);
+                        PrintField(field);
                         userMoves = 0;
                         break;
 
                     case "TOP":
-                        PrintWinnerBoard(SortWinnerBoard(topFive));
+                        PrintWinnerBoard(SortWinnerBoard(topFiveWinnersChart));
                         break;
 
                     case "EXIT":
@@ -293,37 +293,37 @@ namespace BalloonsPop5Game
                             (commandInput[2] >= '0' && commandInput[2] <= '9') &&
                             (commandInput[1] == ' ' || commandInput[1] == '.' || commandInput[1] == ','))
                         {
-                            int userRow = int.Parse(commandInput[0].ToString());
-                            if (userRow > 4)
+                            int userInputRow = int.Parse(commandInput[0].ToString());
+                            if (userInputRow > 4)
                             {
                                 Console.WriteLine("Wrong input ! Try Again ! \n");
                                 continue;
                             }
 
-                            int userColumn = int.Parse(commandInput[2].ToString());
-                            if (Change(level, userRow, userColumn))
+                            int userInputColumn = int.Parse(commandInput[2].ToString());
+                            if (Change(field, userInputRow, userInputColumn))
                             {
                                 Console.WriteLine("Illegal move: cannot pop missing ballon!\n");
                                 continue;
                             }
 
                             userMoves++;
-                            if (FinishedLevel(level))
+                            if (FinishedLevel(field))
                             {
                                 Console.WriteLine("Gratz ! You completed the level in {0} moves.\n", userMoves);
-                                if (topFive.CheckIfSkilled(userMoves))
+                                if (topFiveWinnersChart.CheckIfSkilled(userMoves))
                                 {
-                                    PrintWinnerBoard(SortWinnerBoard(topFive));
+                                    PrintWinnerBoard(SortWinnerBoard(topFiveWinnersChart));
                                 }
                                 else
                                 {
                                     Console.WriteLine("I am sorry you are not skillful enough for TopFive chart!");
                                     System.Threading.Thread.Sleep(3000);
                                 }
-                                level = GenerateLevel(5, 10);
+                                field = GenerateField(5, 10);
                                 userMoves = 0;
                             }
-                            PrintLevel(level);
+                            PrintField(field);
                             break;
                         }
                         else

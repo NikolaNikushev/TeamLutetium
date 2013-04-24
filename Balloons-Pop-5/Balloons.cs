@@ -29,7 +29,6 @@ namespace BalloonsPop5Game
               "'restart' to start a new game and 'exit' to quit the game. \n");
         }
 
-
         static void CheckPosition(byte[,] field, int row, int column, int searchedItem)
         {
             try
@@ -176,6 +175,7 @@ namespace BalloonsPop5Game
         static void Main(string[] args)
         {
             string[,] topFiveWinnersChart = new string[5, 2];
+            //PlayField field = new PlayField(5, 10);
             byte[,] field = GenerateField(5, 10);
             PrintField(field);
 
@@ -192,6 +192,7 @@ namespace BalloonsPop5Game
                 switch (commandInput)
                 {
                     case "RESTART":
+                        //PlayField field = new PlayField(5, 10);
                         field = GenerateField(5, 10);
                         PrintField(field);
                         userMoves = 0;

@@ -19,6 +19,7 @@ namespace BalloonsPop5Game
                 }
             }
             return randomFields;
+
         }
 
         private static void PrintInstructions()
@@ -28,100 +29,111 @@ namespace BalloonsPop5Game
               "'restart' to start a new game and 'exit' to quit the game. \n");
         }
 
-        static void checkLeft(byte[,] level, int row, int column, int searchedItem)
+        static void CheckLeft(byte[,] level, int row, int column, int searchedItem)
         {
             int newRow = row;
             int newColumn = column - 1;
-            try
+            if (newColumn>=0)
             {
-                if (level[newRow, newColumn] == searchedItem)
+                try
                 {
-                    level[newRow, newColumn] = 0; 
-                    checkLeft(level, newRow, newColumn, searchedItem);
+                    if (level[newRow, newColumn] == searchedItem)
+                    {
+                        level[newRow, newColumn] = 0;
+                        CheckLeft(level, newRow, newColumn, searchedItem);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-                else
+                catch (IndexOutOfRangeException)
                 {
-                    return;
+                    Console.WriteLine("Index was out of range!");
+                    //return;
                 }
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Console.WriteLine("Index was out of range!");
-                //return;
             }
         }
 
-        static void checkRight(byte[,] level, int row, int column, int searchedItem)
+        static void CheckRight(byte[,] level, int row, int column, int searchedItem)
         {
             int newRow = row;
             int newColumn = column + 1;
-            try
+            if (newColumn<=level.GetLength(1))
             {
-                if (level[newRow, newColumn] == searchedItem)
+                try
                 {
-                    level[newRow, newColumn] = 0;
-                    checkRight(level, newRow, newColumn, searchedItem);
+                    if (level[newRow, newColumn] == searchedItem)
+                    {
+                        level[newRow, newColumn] = 0;
+                        CheckRight(level, newRow, newColumn, searchedItem);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-                else
+                catch (IndexOutOfRangeException)
                 {
-                    return;
+                    Console.WriteLine("Index was out of range!\n");
+                    //return;
                 }
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Console.WriteLine("Index was out of range!\n");
-                //return;
             }
         }
 
-        static void checkUp(byte[,] level, int row, int column, int searchedItem)
-        {
-            int newRow = row + 1;
-            int newColumn = column;
-            try
-            {
-                if (level[newRow, newColumn] == searchedItem)
-                {
-                    level[newRow, newColumn] = 0;
-                    checkUp(level, newRow, newColumn, searchedItem);
-                }
-                else
-                {
-                    return;
-                }
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Console.WriteLine("Index was out of range!\n");
-                //return;
-            }
-        }
-
-        static void checkDown(byte[,] level, int row, int column, int searchedItem)
+        static void CheckUp(byte[,] level, int row, int column, int searchedItem)
         {
             int newRow = row - 1;
             int newColumn = column;
-            try
+            if (newRow>=0)
             {
-                if (level[newRow, newColumn] == searchedItem)
+                try
                 {
-                    level[newRow, newColumn] = 0;
-                    checkDown(level, newRow, newColumn, searchedItem);
+                    if (level[newRow, newColumn] == searchedItem)
+                    {
+                        level[newRow, newColumn] = 0;
+                        CheckUp(level, newRow, newColumn, searchedItem);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-                else
+                catch (IndexOutOfRangeException)
                 {
-                    return;
+                    Console.WriteLine("Index was out of range!\n");
+                    //return;
                 }
             }
-            catch (IndexOutOfRangeException)
-            {
-                Console.WriteLine("Index was out of range!");
-                //return;
-            }
-
         }
 
-        static bool change(byte[,] levelToModify, int rowAtm, int columnAtm)
+        static void CheckDown(byte[,] level, int row, int column, int searchedItem)
+        {
+            int newRow = row + 1;
+            int newColumn = column;
+            if (newRow<=level.GetLength(0))
+            {
+                try
+                {
+                    if (level[newRow, newColumn] == searchedItem)
+                    {
+                        level[newRow, newColumn] = 0;
+                        CheckDown(level, newRow, newColumn, searchedItem);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    Console.WriteLine("Index was out of range!");
+                    //return;
+                }
+            }
+        }
+
+        static bool Change(byte[,] levelToModify, int rowAtm, int columnAtm)
         {
             if (levelToModify[rowAtm, columnAtm] == 0)
             {
@@ -130,15 +142,15 @@ namespace BalloonsPop5Game
             byte searchedTarget = levelToModify[rowAtm, columnAtm];
             levelToModify[rowAtm, columnAtm] = 0;
 
-            checkLeft(levelToModify, rowAtm, columnAtm, searchedTarget);
-            checkRight(levelToModify, rowAtm, columnAtm, searchedTarget);
-            checkUp(levelToModify, rowAtm, columnAtm, searchedTarget);
-            checkDown(levelToModify, rowAtm, columnAtm, searchedTarget);
+            CheckLeft(levelToModify, rowAtm, columnAtm, searchedTarget);
+            CheckRight(levelToModify, rowAtm, columnAtm, searchedTarget);
+            CheckUp(levelToModify, rowAtm, columnAtm, searchedTarget);
+            CheckDown(levelToModify, rowAtm, columnAtm, searchedTarget);
 
             return false;
         }
 
-        static bool finishedLevel(byte[,] level)
+        static bool FinishedLevel(byte[,] level)
         {
             bool isWinner = true;
             Stack<byte> winners = new Stack<byte>();
@@ -168,7 +180,7 @@ namespace BalloonsPop5Game
             return isWinner;
         }
 
-        static void sortAndPrintWinnerBoard(string[,] tableToSort)
+        static void SortAndPrintWinnerBoard(string[,] tableToSort)
         {
             List<ScoreBoard> scoreBoard = new List<ScoreBoard>();
 
@@ -264,7 +276,7 @@ namespace BalloonsPop5Game
                         break;
 
                     case "TOP":
-                        sortAndPrintWinnerBoard(topFive);
+                        SortAndPrintWinnerBoard(topFive);
                         break;
 
                     case "EXIT":
@@ -285,19 +297,19 @@ namespace BalloonsPop5Game
                             }
 
                             int userColumn = int.Parse(commandInput[2].ToString());
-                            if (change(level, userRow, userColumn))
+                            if (Change(level, userRow, userColumn))
                             {
                                 Console.WriteLine("Illegal move: cannot pop missing ballon!\n");
                                 continue;
                             }
 
                             userMoves++;
-                            if (finishedLevel(level))
+                            if (FinishedLevel(level))
                             {
                                 Console.WriteLine("Gratz ! You completed the level in {0} moves.\n", userMoves);
-                                if (topFive.signIfSkilled(userMoves))
+                                if (topFive.CheckIfSkilled(userMoves))
                                 {
-                                    sortAndPrintWinnerBoard(topFive);
+                                    SortAndPrintWinnerBoard(topFive);
                                 }
                                 else
                                 {

@@ -4,55 +4,50 @@ namespace BalloonsPop5Game
 {
     static class StringExtensions
     {
-        //public override string ToString()
-        //{
-        //    return string.Format("");
-        //}
-
-        public static bool signIfSkilled(this string[,] Chart, int points)
+        public static bool CheckIfSkilled(this string[,] chart, int points)
         {
-            bool Skilled = false;
+            bool isSkilled = false;
             
             for (int chartPosition = 0; chartPosition < 5; chartPosition++)
             {
-                if (Chart[chartPosition, 0] == null)
+                if (chart[chartPosition, 0] == null)
                 {
-                    Chart = AddToChart(Chart, chartPosition, points);
-                    Skilled = true;
+                    chart = AddToChart(chart, chartPosition, points);
+                    isSkilled = true;
                     break;
                 }
             }
 
             int worstMoves = 0;
             int worstMovesChartPosition = 0;
-            if (Skilled == false)
+            if (isSkilled == false)
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    if (int.Parse(Chart[i, 0]) > worstMoves)
+                    if (int.Parse(chart[i, 0]) > worstMoves)
                     {
                         worstMovesChartPosition = i;
-                        worstMoves = int.Parse(Chart[i, 0]);
+                        worstMoves = int.Parse(chart[i, 0]);
                     }
                 }
             }
-            if (points < worstMoves && Skilled == false)
+            if (points < worstMoves && isSkilled == false)
             {
-                Chart = AddToChart(Chart, worstMovesChartPosition, points);
-                Skilled = true;
+                chart = AddToChart(chart, worstMovesChartPosition, points);
+                isSkilled = true;
             }
-            return Skilled;
+            return isSkilled;
         }
 
-        private static string[,] AddToChart(string [,] Chart, int chartPosition, int points )
+        private static string[,] AddToChart(string [,] chart, int chartPosition, int points )
         {
             Console.WriteLine("Type in your name.");
             string userName = Console.ReadLine();
 
-            Chart[chartPosition, 0] = points.ToString();
-            Chart[chartPosition, 1] = userName;
+            chart[chartPosition, 0] = points.ToString();
+            chart[chartPosition, 1] = userName;
            
-            return Chart;
+            return chart;
         }
     }
 }

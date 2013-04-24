@@ -4,8 +4,8 @@ namespace BalloonsPop5Game
 {
     public class ScoreBoard : IComparable<ScoreBoard>
     {
-        public int Value;
-        public string Name;
+        public int Value {get; private set;}
+        public string Name {get;private set;}
 
         public ScoreBoard(int value, string name)
         {
@@ -15,7 +15,22 @@ namespace BalloonsPop5Game
 
         public int CompareTo(ScoreBoard other)
         {
-            return Value.CompareTo(other.Value);
+            if (this.Value>other.Value)
+            {
+                return 1;
+            }
+            else if (this.Value==other.Value)
+            {
+                return 0;
+            }
+            else if(this.Value<other.Value)
+            {
+                return -1;
+            }
+            else
+            {
+                throw new ArgumentException("1");
+            }
         }
     }
 }

@@ -29,7 +29,8 @@ namespace BalloonsPop5Game
             }
             else
             {
-                throw new ArgumentException("1");
+                throw new ArgumentException(
+                    "The properties Value of different instances could be either greater than each other or equal.");
             }
         }
     }

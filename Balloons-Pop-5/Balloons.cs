@@ -53,16 +53,17 @@ namespace BalloonsPop5Game
             }
         }
 
-        static bool Change(byte[,] fieldToModify, int row, int column)
+        static bool MakeChangesToField(byte[,] fieldToModify, int row, int column)
         {
-            if (fieldToModify[row, column] == 0)
+            bool madeChanges = false;
+            if (fieldToModify[row, column] != 0)
             {
-                return true;
+                madeChanges= true;
+                byte searchedTarget = fieldToModify[row, column];
+                CheckPosition(fieldToModify, row, column, searchedTarget);
             }
-            byte searchedTarget = fieldToModify[row, column];
-            CheckPosition(fieldToModify, row, column, searchedTarget);
-
-            return false;
+            
+            return madeChanges;
         }
 
         static bool FinishedLevel(byte[,] field)
@@ -218,7 +219,7 @@ namespace BalloonsPop5Game
                             }
 
                             int userInputColumn = int.Parse(commandInput[2].ToString());
-                            if (Change(field, userInputRow, userInputColumn))
+                            if (!MakeChangesToField(field, userInputRow, userInputColumn))
                             {
                                 Console.WriteLine("Illegal move: cannot pop missing ballon!\n");
                                 continue;

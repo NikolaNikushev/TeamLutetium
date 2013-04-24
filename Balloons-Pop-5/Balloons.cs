@@ -8,17 +8,17 @@ namespace BalloonsPop5Game
         static byte[,] GenerateLevel(byte rows, byte columns)
         {
             PrintInstructions();
-            byte[,] randomFields = new byte[rows, columns];
-            Random randomNumber = new Random();
+            byte[,] randomField = new byte[rows, columns];
+            Random randomNumberGenerator = new Random();
             for (byte row = 0; row < rows; row++)
             {
                 for (byte column = 0; column < columns; column++)
                 {
-                    byte currentNumber = (byte)randomNumber.Next(1, 5);
-                    randomFields[row, column] = currentNumber;
+                    byte currentNumber = (byte)randomNumberGenerator.Next(1, 5);
+                    randomField[row, column] = currentNumber;
                 }
             }
-            return randomFields;
+            return randomField;
 
         }
 
@@ -29,7 +29,7 @@ namespace BalloonsPop5Game
               "'restart' to start a new game and 'exit' to quit the game. \n");
         }
 
-        static void CheckLeft(byte[,] level, int row, int column, int searchedItem)
+        static void CheckLeftPosition(byte[,] field, int row, int column, int searchedItem)
         {
             int newRow = row;
             int newColumn = column - 1;
@@ -37,10 +37,10 @@ namespace BalloonsPop5Game
             {
                 try
                 {
-                    if (level[newRow, newColumn] == searchedItem)
+                    if (field[newRow, newColumn] == searchedItem)
                     {
-                        level[newRow, newColumn] = 0;
-                        CheckLeft(level, newRow, newColumn, searchedItem);
+                        field[newRow, newColumn] = 0;
+                        CheckLeftPosition(field, newRow, newColumn, searchedItem);
                     }
                     else
                     {
@@ -50,23 +50,22 @@ namespace BalloonsPop5Game
                 catch (IndexOutOfRangeException)
                 {
                     Console.WriteLine("Index was out of range!");
-                    //return;
                 }
             }
         }
 
-        static void CheckRight(byte[,] level, int row, int column, int searchedItem)
+        static void CheckRightPosition(byte[,] field, int row, int column, int searchedItem)
         {
             int newRow = row;
             int newColumn = column + 1;
-            if (newColumn<=level.GetLength(1))
+            if (newColumn<=field.GetLength(1))
             {
                 try
                 {
-                    if (level[newRow, newColumn] == searchedItem)
+                    if (field[newRow, newColumn] == searchedItem)
                     {
-                        level[newRow, newColumn] = 0;
-                        CheckRight(level, newRow, newColumn, searchedItem);
+                        field[newRow, newColumn] = 0;
+                        CheckRightPosition(field, newRow, newColumn, searchedItem);
                     }
                     else
                     {
@@ -76,12 +75,11 @@ namespace BalloonsPop5Game
                 catch (IndexOutOfRangeException)
                 {
                     Console.WriteLine("Index was out of range!\n");
-                    //return;
                 }
             }
         }
 
-        static void CheckUp(byte[,] level, int row, int column, int searchedItem)
+        static void CheckUpperPosition(byte[,] field, int row, int column, int searchedItem)
         {
             int newRow = row - 1;
             int newColumn = column;
@@ -89,10 +87,10 @@ namespace BalloonsPop5Game
             {
                 try
                 {
-                    if (level[newRow, newColumn] == searchedItem)
+                    if (field[newRow, newColumn] == searchedItem)
                     {
-                        level[newRow, newColumn] = 0;
-                        CheckUp(level, newRow, newColumn, searchedItem);
+                        field[newRow, newColumn] = 0;
+                        CheckUpperPosition(field, newRow, newColumn, searchedItem);
                     }
                     else
                     {
@@ -107,18 +105,18 @@ namespace BalloonsPop5Game
             }
         }
 
-        static void CheckDown(byte[,] level, int row, int column, int searchedItem)
+        static void CheckLowerPosition(byte[,] field, int row, int column, int searchedItem)
         {
             int newRow = row + 1;
             int newColumn = column;
-            if (newRow<=level.GetLength(0))
+            if (newRow<=field.GetLength(0))
             {
                 try
                 {
-                    if (level[newRow, newColumn] == searchedItem)
+                    if (field[newRow, newColumn] == searchedItem)
                     {
-                        level[newRow, newColumn] = 0;
-                        CheckDown(level, newRow, newColumn, searchedItem);
+                        field[newRow, newColumn] = 0;
+                        CheckLowerPosition(field, newRow, newColumn, searchedItem);
                     }
                     else
                     {
@@ -133,54 +131,54 @@ namespace BalloonsPop5Game
             }
         }
 
-        static bool Change(byte[,] levelToModify, int rowAtm, int columnAtm)
+        static bool Change(byte[,] fieldToModify, int row, int column)
         {
-            if (levelToModify[rowAtm, columnAtm] == 0)
+            if (fieldToModify[row, column] == 0)
             {
                 return true;
             }
-            byte searchedTarget = levelToModify[rowAtm, columnAtm];
-            levelToModify[rowAtm, columnAtm] = 0;
+            byte searchedTarget = fieldToModify[row, column];
+            fieldToModify[row, column] = 0;
 
-            CheckLeft(levelToModify, rowAtm, columnAtm, searchedTarget);
-            CheckRight(levelToModify, rowAtm, columnAtm, searchedTarget);
-            CheckUp(levelToModify, rowAtm, columnAtm, searchedTarget);
-            CheckDown(levelToModify, rowAtm, columnAtm, searchedTarget);
+            CheckLeftPosition(fieldToModify, row, column, searchedTarget);
+            CheckRightPosition(fieldToModify, row, column, searchedTarget);
+            CheckUpperPosition(fieldToModify, row, column, searchedTarget);
+            CheckLowerPosition(fieldToModify, row, column, searchedTarget);
 
             return false;
         }
 
-        static bool FinishedLevel(byte[,] level)
+        static bool FinishedLevel(byte[,] field)
         {
             bool isWinner = true;
             Stack<byte> winners = new Stack<byte>();
-            int columnLenght = level.GetLength(0);
-            for (int j = 0; j < level.GetLength(1); j++)
+            int columnLength = field.GetLength(0);
+            for (int j = 0; j < field.GetLength(1); j++)
             {
-                for (int i = 0; i < columnLenght; i++)
+                for (int i = 0; i < columnLength; i++)
                 {
-                    if (level[i, j] != 0)
+                    if (field[i, j] != 0)
                     {
                         isWinner = false;
-                        winners.Push(level[i, j]);
+                        winners.Push(field[i, j]);
                     }
                 }
-                for (int k = columnLenght - 1; (k >= 0); k--)
+                for (int k = columnLength - 1; (k >= 0); k--)
                 {
                     try
                     {
-                        level[k, j] = winners.Pop();
+                        field[k, j] = winners.Pop();
                     }
                     catch (Exception)
                     {
-                        level[k, j] = 0;
+                        field[k, j] = 0;
                     }
                 }
             }
             return isWinner;
         }
 
-        static void SortAndPrintWinnerBoard(string[,] tableToSort)
+        static List<ScoreBoard> SortWinnerBoard(string[,] tableToSort)
         {
             List<ScoreBoard> scoreBoard = new List<ScoreBoard>();
 
@@ -192,8 +190,13 @@ namespace BalloonsPop5Game
                 }
                 scoreBoard.Add(new ScoreBoard(int.Parse(tableToSort[i, 0]), tableToSort[i, 1]));
             }
-
             scoreBoard.Sort();
+
+            return scoreBoard;
+        }
+
+        static void PrintWinnerBoard(List<ScoreBoard> scoreBoard)
+        {
             if (scoreBoard.Count == 0)
             {
                 Console.WriteLine("The score board is empty!");
@@ -208,6 +211,7 @@ namespace BalloonsPop5Game
                 }
                 Console.WriteLine("----------------------------------");
             }
+
             Console.WriteLine();
         }
 
@@ -276,7 +280,7 @@ namespace BalloonsPop5Game
                         break;
 
                     case "TOP":
-                        SortAndPrintWinnerBoard(topFive);
+                        PrintWinnerBoard(SortWinnerBoard(topFive));
                         break;
 
                     case "EXIT":
@@ -309,7 +313,7 @@ namespace BalloonsPop5Game
                                 Console.WriteLine("Gratz ! You completed the level in {0} moves.\n", userMoves);
                                 if (topFive.CheckIfSkilled(userMoves))
                                 {
-                                    SortAndPrintWinnerBoard(topFive);
+                                    PrintWinnerBoard(SortWinnerBoard(topFive));
                                 }
                                 else
                                 {

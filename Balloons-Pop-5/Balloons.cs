@@ -29,105 +29,27 @@ namespace BalloonsPop5Game
               "'restart' to start a new game and 'exit' to quit the game. \n");
         }
 
-        static void CheckLeftPosition(byte[,] field, int row, int column, int searchedItem)
-        {
-            int newRow = row;
-            int newColumn = column - 1;
-            if (newColumn>=0)
-            {
-                try
-                {
-                    if (field[newRow, newColumn] == searchedItem)
-                    {
-                        field[newRow, newColumn] = 0;
-                        CheckLeftPosition(field, newRow, newColumn, searchedItem);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    Console.WriteLine("Index was out of range!");
-                }
-            }
-        }
 
-        static void CheckRightPosition(byte[,] field, int row, int column, int searchedItem)
+        static void CheckPosition(byte[,] field, int row, int column, int searchedItem)
         {
-            int newRow = row;
-            int newColumn = column + 1;
-            if (newColumn<=field.GetLength(1))
+            try
             {
-                try
-                {
-                    if (field[newRow, newColumn] == searchedItem)
+                if (field[row, column] == searchedItem)
                     {
-                        field[newRow, newColumn] = 0;
-                        CheckRightPosition(field, newRow, newColumn, searchedItem);
+                        field[row, column] = 0;
+                        CheckPosition(field, row - 1, column, searchedItem);
+                        CheckPosition(field, row + 1, column, searchedItem);
+                        CheckPosition(field, row, column + 1, searchedItem);
+                        CheckPosition(field, row, column - 1, searchedItem);
                     }
                     else
                     {
                         return;
                     }
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    Console.WriteLine("Index was out of range!\n");
-                }
             }
-        }
-
-        static void CheckUpperPosition(byte[,] field, int row, int column, int searchedItem)
-        {
-            int newRow = row - 1;
-            int newColumn = column;
-            if (newRow>=0)
+            catch (IndexOutOfRangeException)
             {
-                try
-                {
-                    if (field[newRow, newColumn] == searchedItem)
-                    {
-                        field[newRow, newColumn] = 0;
-                        CheckUpperPosition(field, newRow, newColumn, searchedItem);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    Console.WriteLine("Index was out of range!\n");
-                    //return;
-                }
-            }
-        }
-
-        static void CheckLowerPosition(byte[,] field, int row, int column, int searchedItem)
-        {
-            int newRow = row + 1;
-            int newColumn = column;
-            if (newRow<=field.GetLength(0))
-            {
-                try
-                {
-                    if (field[newRow, newColumn] == searchedItem)
-                    {
-                        field[newRow, newColumn] = 0;
-                        CheckLowerPosition(field, newRow, newColumn, searchedItem);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    Console.WriteLine("Index was out of range!");
-                    //return;
-                }
+                return;
             }
         }
 
@@ -138,12 +60,7 @@ namespace BalloonsPop5Game
                 return true;
             }
             byte searchedTarget = fieldToModify[row, column];
-            fieldToModify[row, column] = 0;
-
-            CheckLeftPosition(fieldToModify, row, column, searchedTarget);
-            CheckRightPosition(fieldToModify, row, column, searchedTarget);
-            CheckUpperPosition(fieldToModify, row, column, searchedTarget);
-            CheckLowerPosition(fieldToModify, row, column, searchedTarget);
+            CheckPosition(fieldToModify, row, column, searchedTarget);
 
             return false;
         }

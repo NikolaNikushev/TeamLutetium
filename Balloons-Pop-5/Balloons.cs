@@ -7,7 +7,6 @@ namespace BalloonsPop5Game
     {
         static byte[,] GenerateField(byte rows, byte columns)
         {
-            PrintInstructions();
             byte[,] randomField = new byte[rows, columns];
             Random randomNumberGenerator = new Random();
             for (byte row = 0; row < rows; row++)
@@ -70,25 +69,25 @@ namespace BalloonsPop5Game
             bool isWinner = true;
             Stack<byte> winners = new Stack<byte>();
             int columnLength = field.GetLength(0);
-            for (int j = 0; j < field.GetLength(1); j++)
+            for (int col = 0; col < field.GetLength(1); col++)
             {
-                for (int i = 0; i < columnLength; i++)
+                for (int row = 0; row < columnLength; row++)
                 {
-                    if (field[i, j] != 0)
+                    if (field[row, col] != 0)
                     {
                         isWinner = false;
-                        winners.Push(field[i, j]);
+                        winners.Push(field[row, col]);
                     }
                 }
-                for (int k = columnLength - 1; (k >= 0); k--)
+                for (int winnerPosition = columnLength - 1; (winnerPosition >= 0); winnerPosition--)
                 {
                     try
                     {
-                        field[k, j] = winners.Pop();
+                        field[winnerPosition, col] = winners.Pop();
                     }
                     catch (Exception)
                     {
-                        field[k, j] = 0;
+                        field[winnerPosition, col] = 0;
                     }
                 }
             }
@@ -99,13 +98,13 @@ namespace BalloonsPop5Game
         {
             List<ScoreBoard> scoreBoard = new List<ScoreBoard>();
 
-            for (int i = 0; i < 5; ++i)
+            for (int row = 0; row < 5; ++row)
             {
-                if (tableToSort[i, 0] == null)
+                if (tableToSort[row, 0] == null)
                 {
                     break;
                 }
-                scoreBoard.Add(new ScoreBoard(int.Parse(tableToSort[i, 0]), tableToSort[i, 1]));
+                scoreBoard.Add(new ScoreBoard(int.Parse(tableToSort[row, 0]), tableToSort[row, 1]));
             }
             scoreBoard.Sort();
 
@@ -121,10 +120,10 @@ namespace BalloonsPop5Game
             else
             {
                 Console.WriteLine("---------TOP FIVE Players-----------");
-                for (int i = 0; i < scoreBoard.Count; ++i)
+                for (int winnerPosition = 0; winnerPosition < scoreBoard.Count; ++winnerPosition)
                 {
-                    ScoreBoard slot = scoreBoard[i];
-                    Console.WriteLine("{2}.   {0} with {1} moves.", slot.Name, slot.Value, i + 1);
+                    ScoreBoard slot = scoreBoard[winnerPosition];
+                    Console.WriteLine("{2}.   {0} with {1} moves.", slot.Name, slot.Value, winnerPosition + 1);
                 }
                 Console.WriteLine("----------------------------------");
             }
@@ -134,7 +133,8 @@ namespace BalloonsPop5Game
 
         private static void PrintField(byte[,] field)
         {
-            //Console.Clear();
+            Console.Clear();
+            PrintInstructions();
             Console.Write("    ");
             for (byte column = 0; column < field.GetLongLength(1); column++)
             {
@@ -149,17 +149,17 @@ namespace BalloonsPop5Game
 
             Console.WriteLine();
 
-            for (byte i = 0; i < field.GetLongLength(0); i++)
+            for (byte row = 0; row < field.GetLongLength(0); row++)
             {
-                Console.Write(i + " | ");
-                for (byte j = 0; j < field.GetLongLength(1); j++)
+                Console.Write(row + " | ");
+                for (byte col = 0; col < field.GetLongLength(1); col++)
                 {
-                    if (field[i, j] == 0)
+                    if (field[row, col] == 0)
                     {
                         Console.Write("  ");
                         continue;
                     }
-                    Console.Write(field[i, j] + " ");
+                    Console.Write(field[row, col] + " ");
                 }
                 Console.Write("| ");
                 Console.WriteLine();

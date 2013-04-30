@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balloons-Pop-5", "Balloons-Pop-5.csproj", "{3B262708-74F1-4794-8F0C-C96EB718A8A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BalloonsPop5Game", "BalloonsPop5Game.csproj", "{3B262708-74F1-4794-8F0C-C96EB718A8A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

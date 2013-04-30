@@ -5,183 +5,18 @@ namespace BalloonsPop5Game
 {
     class Balloons
     {
-        static byte[,] GenerateField(byte rows, byte columns)
-        {
-            byte[,] randomField = new byte[rows, columns];
-            Random randomNumberGenerator = new Random();
-            for (byte row = 0; row < rows; row++)
-            {
-                for (byte column = 0; column < columns; column++)
-                {
-                    byte currentNumber = (byte)randomNumberGenerator.Next(1, 5);
-                    randomField[row, column] = currentNumber;
-                }
-            }
-            return randomField;
-
-        }
-
-        private static void PrintInstructions()
-        {
-            Console.WriteLine("Welcome to “Balloons Pops” game. " +
-           "Please try to pop the balloons. \nUse 'top' to view the top scoreboard,\n" +
-              "'restart' to start a new game and 'exit' to quit the game. \n");
-        }
-
-        static void CheckPosition(byte[,] field, int row, int column, int searchedItem)
-        {
-            try
-            {
-                if (field[row, column] == searchedItem)
-                    {
-                        field[row, column] = 0;
-                        CheckPosition(field, row - 1, column, searchedItem);
-                        CheckPosition(field, row + 1, column, searchedItem);
-                        CheckPosition(field, row, column + 1, searchedItem);
-                        CheckPosition(field, row, column - 1, searchedItem);
-                    }
-                    else
-                    {
-                        return;
-                    }
-            }
-            catch (IndexOutOfRangeException)
-            {
-                return;
-            }
-        }
-
-        static bool MakeChangesToField(byte[,] fieldToModify, int row, int column)
-        {
-            bool madeChanges = false;
-            if (fieldToModify[row, column] != 0)
-            {
-                madeChanges= true;
-                byte searchedTarget = fieldToModify[row, column];
-                CheckPosition(fieldToModify, row, column, searchedTarget);
-            }
-            
-            return madeChanges;
-        }
-
-        static bool FinishedLevel(byte[,] field)
-        {
-            bool isWinner = true;
-            Stack<byte> winners = new Stack<byte>();
-            int columnLength = field.GetLength(0);
-            for (int col = 0; col < field.GetLength(1); col++)
-            {
-                for (int row = 0; row < columnLength; row++)
-                {
-                    if (field[row, col] != 0)
-                    {
-                        isWinner = false;
-                        winners.Push(field[row, col]);
-                    }
-                }
-                for (int winnerPosition = columnLength - 1; (winnerPosition >= 0); winnerPosition--)
-                {
-                    try
-                    {
-                        field[winnerPosition, col] = winners.Pop();
-                    }
-                    catch (Exception)
-                    {
-                        field[winnerPosition, col] = 0;
-                    }
-                }
-            }
-            return isWinner;
-        }
-
-        static List<ScoreBoard> SortWinnerBoard(string[,] tableToSort)
-        {
-            List<ScoreBoard> scoreBoard = new List<ScoreBoard>();
-
-            for (int row = 0; row < 5; ++row)
-            {
-                if (tableToSort[row, 0] == null)
-                {
-                    break;
-                }
-                scoreBoard.Add(new ScoreBoard(int.Parse(tableToSort[row, 0]), tableToSort[row, 1]));
-            }
-            scoreBoard.Sort();
-
-            return scoreBoard;
-        }
-
-        static void PrintWinnerBoard(List<ScoreBoard> scoreBoard)
-        {
-            if (scoreBoard.Count == 0)
-            {
-                Console.WriteLine("The score board is empty!");
-            }
-            else
-            {
-                Console.WriteLine("---------TOP FIVE Players-----------");
-                for (int winnerPosition = 0; winnerPosition < scoreBoard.Count; ++winnerPosition)
-                {
-                    ScoreBoard slot = scoreBoard[winnerPosition];
-                    Console.WriteLine("{2}.   {0} with {1} moves.", slot.Name, slot.Value, winnerPosition + 1);
-                }
-                Console.WriteLine("----------------------------------");
-            }
-
-            Console.WriteLine();
-        }
-
-        private static void PrintField(byte[,] field)
-        {
-            Console.Clear();
-            PrintInstructions();
-            Console.Write("    ");
-            for (byte column = 0; column < field.GetLongLength(1); column++)
-            {
-                Console.Write(column + " ");
-            }
-
-            Console.Write("\n   ");
-            for (byte column = 0; column < field.GetLongLength(1) * 2 + 1; column++)
-            {
-                Console.Write("-");
-            }
-
-            Console.WriteLine();
-
-            for (byte row = 0; row < field.GetLongLength(0); row++)
-            {
-                Console.Write(row + " | ");
-                for (byte col = 0; col < field.GetLongLength(1); col++)
-                {
-                    if (field[row, col] == 0)
-                    {
-                        Console.Write("  ");
-                        continue;
-                    }
-                    Console.Write(field[row, col] + " ");
-                }
-                Console.Write("| ");
-                Console.WriteLine();
-            }
-            Console.Write("   ");
-            for (byte column = 0; column < field.GetLongLength(1) * 2 + 1; column++)
-            {
-                Console.Write("-");
-            }
-            Console.WriteLine();
-        }
-
         static void Main(string[] args)
         {
+            //Todo: Get the topFiveWinnersChart to the AddToBoard or scoreboard so it is created there
+            PlayField field = new PlayField(5, 10);
+            ScoreBoard scoreboard = new ScoreBoard(5, "TOP");
             string[,] topFiveWinnersChart = new string[5, 2];
-            //PlayField field = new PlayField(5, 10);
-            byte[,] field = GenerateField(5, 10);
-            PrintField(field);
 
             string commandInput = null;
             int userMoves = 0;
 
+            field.PrintField();
+           
             while (commandInput != "EXIT")
             {
                 Console.WriteLine("Enter a row and column: ");
@@ -192,14 +27,13 @@ namespace BalloonsPop5Game
                 switch (commandInput)
                 {
                     case "RESTART":
-                        //PlayField field = new PlayField(5, 10);
-                        field = GenerateField(5, 10);
-                        PrintField(field);
+                        field = new PlayField(5, 10);
+                        field.PrintField();
                         userMoves = 0;
                         break;
 
                     case "TOP":
-                        PrintWinnerBoard(SortWinnerBoard(topFiveWinnersChart));
+                        scoreboard.PrintWinnerBoard();
                         break;
 
                     case "EXIT":
@@ -218,31 +52,34 @@ namespace BalloonsPop5Game
                                 Console.WriteLine("Wrong input ! Try Again ! \n");
                                 continue;
                             }
-
+                            
                             int userInputColumn = int.Parse(commandInput[2].ToString());
-                            if (!MakeChangesToField(field, userInputRow, userInputColumn))
+                            if (!field.MakeChangesToField(userInputRow, userInputColumn))
                             {
                                 Console.WriteLine("Illegal move: cannot pop missing ballon!\n");
                                 continue;
                             }
 
                             userMoves++;
-                            if (FinishedLevel(field))
+                            if (field.FinishedLevel())
                             {
                                 Console.WriteLine("Gratz ! You completed the level in {0} moves.\n", userMoves);
                                 if (topFiveWinnersChart.CheckIfSkilled(userMoves))
                                 {
-                                    PrintWinnerBoard(SortWinnerBoard(topFiveWinnersChart));
+                                    scoreboard.SortWinnerBoard(topFiveWinnersChart);
+                                    scoreboard.PrintWinnerBoard();
+
+                                    System.Threading.Thread.Sleep(3000);
                                 }
                                 else
                                 {
                                     Console.WriteLine("I am sorry you are not skillful enough for TopFive chart!");
                                     System.Threading.Thread.Sleep(3000);
                                 }
-                                field = GenerateField(5, 10);
+                                field = new PlayField(5, 10);
                                 userMoves = 0;
                             }
-                            PrintField(field);
+                            field.PrintField();
                             break;
                         }
                         else

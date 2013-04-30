@@ -2,7 +2,7 @@ using System;
 
 namespace BalloonsPop5Game
 {
-    static class StringExtensions
+    static class AddToBoard
     {
         public static bool CheckIfSkilled(this string[,] chart, int points)
         {

@@ -16,7 +16,6 @@ namespace BalloonsPop5Game
             string[,] topFiveWinnersChart = new string[5, 2];
             
             string commandInput = null;
-            int userMoves = 0;
 
             consoleRenderer.PrintField(field);
            
@@ -65,7 +64,7 @@ namespace BalloonsPop5Game
                             if (field.ClearedLevel()) //is empty
                             {
 
-                                Console.WriteLine("Gratz ! You completed the level in {0} moves.\n", userMoves);
+                                Console.WriteLine("Gratz ! You completed the level in {0} moves.\n", player.Moves);
                                 if (scoreboard.CheckIfSkilled(player))
                                 {
                                     scoreboard.SortWinnerBoard(topFiveWinnersChart);
@@ -79,7 +78,7 @@ namespace BalloonsPop5Game
                                     System.Threading.Thread.Sleep(3000);
                                 }
                                 field = new PlayField(5, 10);
-                                userMoves = 0;
+                                player = new Player(0);
                             }
                             consoleRenderer.PrintField(field);
                             break;

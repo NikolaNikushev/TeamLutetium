@@ -10,7 +10,5 @@ namespace BalloonsPop5Game
          void PrintGameInstructions();
          void PrintField(PlayField field);
          void PrintWinnerBoard(ScoreBoard scoreBoard);
-        
-        
     }
 }

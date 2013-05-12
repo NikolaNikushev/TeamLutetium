@@ -69,15 +69,14 @@ namespace BalloonsPop5Game
             Console.WriteLine();
         }
 
-        public static string[,] AddToChart(string[,] chart, int chartPosition, int points)
+        public static Player AddPlayerToChart(int chartPosition, int points)
         {
             Console.WriteLine("Type in your name.");
             string userName = Console.ReadLine();
 
-            chart[chartPosition, 0] = points.ToString();
-            chart[chartPosition, 1] = userName;
+            Player player = new Player(points, userName);
 
-            return chart;
+            return player;
         }
 
         public void PrintGameInstructions()

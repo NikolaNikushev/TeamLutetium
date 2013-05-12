@@ -5,7 +5,6 @@ namespace BalloonsPop5Game
 {
     public class ScoreBoard
     {
-
        private readonly List<Player> winnerBoard = new List<Player>();
 
        public ScoreBoard() 
@@ -47,9 +46,9 @@ namespace BalloonsPop5Game
 
            for (int chartPosition = 0; chartPosition < 5; chartPosition++)
            {
-               if (this.winnerBoard[chartPosition] == null)
+               if (this.winnerBoard.Count <= 0 || this.winnerBoard[chartPosition] == null  )
                {
-                   AddToChart(player);
+                   AddToChart(ConsoleRenderer.AddPlayerToChart(chartPosition, player.Moves));
                    isSkilled = true;
                    break;
                }
@@ -70,7 +69,7 @@ namespace BalloonsPop5Game
            }
            if (player.Moves < worstMoves && isSkilled == false)
            {
-               chart = ConsoleRenderer.AddToChart(this.winnerBoard, worstMovesChartPosition);
+              // chart = ConsoleRenderer.AddToChart(this.winnerBoard, worstMovesChartPosition); // Need to fix it :(
                isSkilled = true;
            }
            return isSkilled;

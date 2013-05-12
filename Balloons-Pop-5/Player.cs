@@ -46,6 +46,5 @@ namespace BalloonsPop5Game
                     "The properties Value of different instances could be either greater than each other or equal.");
             }
         }
-
     }
 }

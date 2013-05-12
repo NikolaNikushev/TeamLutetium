@@ -51,9 +51,6 @@ namespace BalloonsPop5Game
             this.field[row, column] = newValue;
         }
 
-
-      
-
        public bool MakeChangesToField(int row, int column)
        {
            bool madeChanges = false;

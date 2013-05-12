@@ -8,14 +8,17 @@ namespace BalloonsPop5Game
         static void Main(string[] args)
         {
             //Todo: Get the topFiveWinnersChart to the AddToBoard or scoreboard so it is created there
-            PlayField field = new PlayField(5, 10);
-            ScoreBoard scoreboard = new ScoreBoard(5, "TOP");
-            string[,] topFiveWinnersChart = new string[5, 2];
 
+            PlayField field = new PlayField(5, 10);
+            ScoreBoard scoreboard = new ScoreBoard();
+            Player player = new Player(0);
+            ConsoleRenderer consoleRenderer = new ConsoleRenderer();
+            string[,] topFiveWinnersChart = new string[5, 2];
+            
             string commandInput = null;
             int userMoves = 0;
 
-            field.PrintField();
+            consoleRenderer.PrintField(field);
            
             while (commandInput != "EXIT")
             {
@@ -28,12 +31,11 @@ namespace BalloonsPop5Game
                 {
                     case "RESTART":
                         field = new PlayField(5, 10);
-                        field.PrintField();
-                        userMoves = 0;
+                        player = new Player(0);
                         break;
 
                     case "TOP":
-                        scoreboard.PrintWinnerBoard();
+                        consoleRenderer.PrintWinnerBoard(scoreboard);
                         break;
 
                     case "EXIT":
@@ -59,15 +61,15 @@ namespace BalloonsPop5Game
                                 Console.WriteLine("Illegal move: cannot pop missing ballon!\n");
                                 continue;
                             }
-
-                            userMoves++;
-                            if (field.FinishedLevel())
+                            player.UpdateMovesAmmount();
+                            if (field.ClearedLevel()) //is empty
                             {
+
                                 Console.WriteLine("Gratz ! You completed the level in {0} moves.\n", userMoves);
-                                if (topFiveWinnersChart.CheckIfSkilled(userMoves))
+                                if (scoreboard.CheckIfSkilled(player))
                                 {
                                     scoreboard.SortWinnerBoard(topFiveWinnersChart);
-                                    scoreboard.PrintWinnerBoard();
+                                    consoleRenderer.PrintWinnerBoard(scoreboard);
 
                                     System.Threading.Thread.Sleep(3000);
                                 }
@@ -79,7 +81,7 @@ namespace BalloonsPop5Game
                                 field = new PlayField(5, 10);
                                 userMoves = 0;
                             }
-                            field.PrintField();
+                            consoleRenderer.PrintField(field);
                             break;
                         }
                         else

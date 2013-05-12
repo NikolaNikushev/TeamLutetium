@@ -3,41 +3,29 @@ using System.Collections.Generic;
 
 namespace BalloonsPop5Game
 {
-    public class ScoreBoard : IComparable<ScoreBoard>
+    public class ScoreBoard
     {
-        public int Value {get; private set;}
-        public string Name {get;private set;}
 
-        private readonly List<ScoreBoard> scoreBoard = new List<ScoreBoard>();
+       private readonly List<Player> winnerBoard = new List<Player>();
 
-        public ScoreBoard(int value, string name)
+       public ScoreBoard() 
+       {
+
+       }
+
+       public int GetLength()
+       {
+           return this.winnerBoard.Count;
+       }
+
+        public Player this[int index]
         {
-            this.Value = value;
-            this.Name = name;
-        }
-
-        public int CompareTo(ScoreBoard other)
-        {
-            if (this.Value>other.Value)
+            get
             {
-                return 1;
-            }
-            else if (this.Value==other.Value)
-            {
-                return 0;
-            }
-            else if(this.Value<other.Value)
-            {
-                return -1;
-            }
-            else
-            {
-                throw new ArgumentException(
-                    "The properties Value of different instances could be either greater than each other or equal.");
+                return this.winnerBoard[index];
             }
         }
-
-       public List<ScoreBoard> SortWinnerBoard(string[,] tableToSort)
+       public List<Player> SortWinnerBoard(string[,] tableToSort)
         {
             for (int row = 0; row < 5; ++row)
             {
@@ -45,31 +33,53 @@ namespace BalloonsPop5Game
                 {
                     break;
                 }
-                scoreBoard.Add(new ScoreBoard(int.Parse(tableToSort[row, 0]), tableToSort[row, 1]));
+                
+                winnerBoard.Add(new Player(int.Parse(tableToSort[row, 0]), tableToSort[row, 1]));
             }
-            scoreBoard.Sort();
+            winnerBoard.Sort();
 
-            return scoreBoard;
+            return winnerBoard;
         }
 
-       public void PrintWinnerBoard()
-        {
-            if (scoreBoard.Count == 0)
-            {
-                Console.WriteLine("The score board is empty!");
-            }
-            else
-            {
-                Console.WriteLine("---------TOP FIVE Players-----------");
-                for (int winnerPosition = 0; winnerPosition < scoreBoard.Count; ++winnerPosition)
-                {
-                    ScoreBoard slot = scoreBoard[winnerPosition];
-                    Console.WriteLine("{2}.   {0} with {1} moves.", slot.Name, slot.Value, winnerPosition + 1);
-                }
-                Console.WriteLine("----------------------------------");
-            }
+       public bool CheckIfSkilled(Player player)
+       {
+           bool isSkilled = false;
 
-            Console.WriteLine();
-        }
+           for (int chartPosition = 0; chartPosition < 5; chartPosition++)
+           {
+               if (this.winnerBoard[chartPosition] == null)
+               {
+                   AddToChart(player);
+                   isSkilled = true;
+                   break;
+               }
+           }
+
+           int worstMoves = 0;
+           int worstMovesChartPosition = 0;
+           if (isSkilled == false)
+           {
+               for (int i = 0; i < 5; i++)
+               {
+                   if (this.winnerBoard[0].Moves > worstMoves)
+                   {
+                       worstMovesChartPosition = i;
+                       worstMoves = this.winnerBoard[i].Moves;
+                   }
+               }
+           }
+           if (player.Moves < worstMoves && isSkilled == false)
+           {
+               chart = ConsoleRenderer.AddToChart(this.winnerBoard, worstMovesChartPosition);
+               isSkilled = true;
+           }
+           return isSkilled;
+       }
+
+       public void AddToChart(Player player)
+       {
+          winnerBoard.Add(player);
+       }
+
     }
 }

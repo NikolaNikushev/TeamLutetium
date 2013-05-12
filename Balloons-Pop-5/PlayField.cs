@@ -13,6 +13,22 @@ namespace BalloonsPop5Game
             this.field = GenerateField(rowsNumber, colsNumber);
         }
 
+        public byte[,] Field 
+        {
+            get
+            {
+                return this.field;
+            } 
+        }
+
+        public byte this[int row, int col]
+        {
+            get
+            {
+                return this.field[row, col];
+            }
+        }
+
         public byte[,] GetFieldContent()
         {
             return this.field;
@@ -30,74 +46,84 @@ namespace BalloonsPop5Game
             }
         }
 
-        private byte[,] GenerateField(byte rows, byte columns)
-        {
-            byte[,] randomField = new byte[rows, columns];
-            Random randomNumberGenerator = new Random();
-            for (byte row = 0; row < rows; row++)
-            {
-                for (byte column = 0; column < columns; column++)
-                {
-                    byte currentNumber = (byte)randomNumberGenerator.Next(1, 5);
-                    randomField[row, column] = currentNumber;
-                }
-            }
-            return randomField;
-        }
-
         public void RespondToOuterChange(byte row, byte column, byte newValue)
         {
             this.field[row, column] = newValue;
         }
 
-        private static void PrintInstructions()
-        {
-            Console.WriteLine("Welcome to “Balloons Pops” game. " +
-           "Please try to pop the balloons. \nUse 'top' to view the top scoreboard,\n" +
-              "'restart' to start a new game and 'exit' to quit the game. \n");
-        }
 
-       public bool FinishedLevel()
-        {
-            bool isWinner = true;
-            Stack<byte> winners = new Stack<byte>();
-            int columnLength = field.GetLength(0);
-            for (int col = 0; col < field.GetLength(1); col++)
-            {
-                for (int row = 0; row < columnLength; row++)
-                {
-                    if (field[row, col] != 0)
-                    {
-                        isWinner = false;
-                        winners.Push(field[row, col]);
-                    }
-                }
-                for (int winnerPosition = columnLength - 1; (winnerPosition >= 0); winnerPosition--)
-                {
-                    try
-                    {
-                        field[winnerPosition, col] = winners.Pop();
-                    }
-                    catch (Exception)
-                    {
-                        field[winnerPosition, col] = 0;
-                    }
-                }
-            }
-            return isWinner;
-        }
+      
 
-       public static void CheckPosition(byte[,] field, int row, int column, int searchedItem)
+       public bool MakeChangesToField(int row, int column)
+       {
+           bool madeChanges = false;
+           if (field[row, column] != 0)
+           {
+               madeChanges = true;
+               byte searchedTarget = field[row, column];
+               PopNeighbouringBallons(field, row, column, searchedTarget);
+           }
+           return madeChanges;
+       }
+
+       private byte[,] GenerateField(byte rows, byte columns)
+       {
+           byte[,] randomField = new byte[rows, columns];
+           Random randomNumberGenerator = new Random();
+           for (byte row = 0; row < rows; row++)
+           {
+               for (byte column = 0; column < columns; column++)
+               {
+                   byte currentNumber = (byte)randomNumberGenerator.Next(1, 5);
+                   randomField[row, column] = currentNumber;
+               }
+           }
+           return randomField;
+       }
+
+       public bool ClearedLevel()
+       {
+           bool isEmpty = true;
+           Stack<byte> winners = new Stack<byte>();
+           int fieldRows = field.GetLength(0);
+           int fieldCols = field.GetLength(1);
+
+           for (int col = 0; col < fieldCols; col++)
+           {
+               for (int row = 0; row < fieldRows; row++)
+               {
+                   if (field[row, col] != 0)
+                   {
+                       isEmpty = false;
+                       winners.Push(field[row, col]);
+                   }
+               }
+               for (int winnerPosition = fieldRows - 1; (winnerPosition >= 0); winnerPosition--)
+               {
+                   try
+                   {
+                       field[winnerPosition, col] = winners.Pop();
+                   }
+                   catch (Exception)
+                   {
+                       field[winnerPosition, col] = 0;
+                   }
+               }
+           }
+           return isEmpty;
+       }
+
+       private static void PopNeighbouringBallons(byte[,] field, int row, int column, int searchedItem)
        {
            try
            {
                if (field[row, column] == searchedItem)
                {
                    field[row, column] = 0;
-                   CheckPosition(field, row - 1, column, searchedItem);
-                   CheckPosition(field, row + 1, column, searchedItem);
-                   CheckPosition(field, row, column + 1, searchedItem);
-                   CheckPosition(field, row, column - 1, searchedItem);
+                   PopNeighbouringBallons(field, row - 1, column, searchedItem);
+                   PopNeighbouringBallons(field, row + 1, column, searchedItem);
+                   PopNeighbouringBallons(field, row, column + 1, searchedItem);
+                   PopNeighbouringBallons(field, row, column - 1, searchedItem);
                }
                else
                {
@@ -109,59 +135,5 @@ namespace BalloonsPop5Game
                return;
            }
        }
-
-      public bool MakeChangesToField(int row, int column)
-       {
-           bool madeChanges = false;
-           if (field[row, column] != 0)
-           {
-               madeChanges = true;
-               byte searchedTarget = field[row, column];
-               CheckPosition(field, row, column, searchedTarget);
-           }
-           return madeChanges;
-       }
-
-        public void PrintField()
-        {
-            Console.Clear();
-            PrintInstructions();
-            Console.Write("    ");
-            for (byte column = 0; column < field.GetLongLength(1); column++)
-            {
-                Console.Write(column + " ");
-            }
-
-            Console.Write("\n   ");
-            for (byte column = 0; column < field.GetLongLength(1) * 2 + 1; column++)
-            {
-                Console.Write("-");
-            }
-
-            Console.WriteLine();
-
-            for (byte row = 0; row < field.GetLongLength(0); row++)
-            {
-                Console.Write(row + " | ");
-                for (byte col = 0; col < field.GetLongLength(1); col++)
-                {
-                    if (field[row, col] == 0)
-                    {
-                        Console.Write("  ");
-                        continue;
-                    }
-                    Console.Write(field[row, col] + " ");
-                }
-                Console.Write("| ");
-                Console.WriteLine();
-            }
-
-            Console.Write("   ");
-            for (byte column = 0; column < field.GetLongLength(1) * 2 + 1; column++)
-            {
-                Console.Write("-");
-            }
-            Console.WriteLine();
-        }
-    }
+   }
 }

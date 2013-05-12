@@ -44,10 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Balloons.cs" />
+    <Compile Include="ConsoleRenderer.cs" />
+    <Compile Include="Engine.cs" />
     <Compile Include="IChangeable.cs" />
+    <Compile Include="IRendered.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="PlayField.cs" />
     <Compile Include="ScoreBoard.cs" />
-    <Compile Include="AddToBoard.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

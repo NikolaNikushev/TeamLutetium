@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace BalloonsPop5Game
+namespace BalloonsPop
 {
     public interface IChangeable
     {

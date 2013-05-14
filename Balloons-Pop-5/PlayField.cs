@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BalloonsPop5Game
+namespace BalloonsPop
 {
     public class PlayField : IChangeable
     {
@@ -10,7 +10,7 @@ namespace BalloonsPop5Game
 
         public PlayField(byte rowsNumber, byte colsNumber)
         {
-            this.field = GenerateField(rowsNumber, colsNumber);
+            this.field = GenerateRandomField(rowsNumber, colsNumber);
         }
 
         public byte[,] Field 
@@ -63,7 +63,7 @@ namespace BalloonsPop5Game
            return madeChanges;
        }
 
-       private byte[,] GenerateField(byte rows, byte columns)
+       private byte[,] GenerateRandomField(byte rows, byte columns)
        {
            byte[,] randomField = new byte[rows, columns];
            Random randomNumberGenerator = new Random();

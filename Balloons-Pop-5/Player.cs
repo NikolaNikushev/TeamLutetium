@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BalloonsPop5Game
+namespace BalloonsPop
 {
     public class Player : IComparable<Player>
     {
@@ -16,6 +16,7 @@ namespace BalloonsPop5Game
             this.Name = name;
         }
 
+        //Used to get the final score
         public void UpdateMovesAmmount()
         {
             this.Moves++;
@@ -26,6 +27,7 @@ namespace BalloonsPop5Game
             this.Moves = moves;
         }
 
+        //Used to sort the players on the winner board.
         public int CompareTo(Player other)
         {
             if (this.Moves>other.Moves)

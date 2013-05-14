@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BalloonsPop5Game
+namespace BalloonsPop
 {
     public class ScoreBoard
     {
@@ -24,58 +24,52 @@ namespace BalloonsPop5Game
                 return this.winnerBoard[index];
             }
         }
-       public List<Player> SortWinnerBoard(string[,] tableToSort)
-        {
-            for (int row = 0; row < 5; ++row)
-            {
-                if (tableToSort[row, 0] == null)
-                {
-                    break;
-                }
-                
-                winnerBoard.Add(new Player(int.Parse(tableToSort[row, 0]), tableToSort[row, 1]));
-            }
-            winnerBoard.Sort();
 
+        //Sorts the winner board by ascending order
+       public List<Player> SortWinnerBoard()
+        {
+            winnerBoard.Sort();
             return winnerBoard;
         }
 
-       public bool CheckIfSkilled(Player player)
+        //Checks if the first 5 places are empty and adds the player to those places
+       public bool CheckIfSkilledAndAddToBoard(Player player)
        {
            bool isSkilled = false;
-
-           for (int chartPosition = 0; chartPosition < 5; chartPosition++)
+           byte winnerMaxPosition = 5;
+           for (int boardPosition = 0; boardPosition < winnerMaxPosition; boardPosition++)
            {
-               if (this.winnerBoard.Count <= 0 || this.winnerBoard[chartPosition] == null  )
+               if (this.winnerBoard.Count <= winnerMaxPosition || this.winnerBoard[boardPosition].Name == null)
                {
-                   AddToChart(ConsoleRenderer.AddPlayerToChart(chartPosition, player.Moves));
+                   AddToBoard(ConsoleRenderer.AddPlayerToBoard(boardPosition, player.Moves));
                    isSkilled = true;
                    break;
                }
            }
 
+           //Checks if the player current score beats his previous score and adds him to the top 5 board
            int worstMoves = 0;
-           int worstMovesChartPosition = 0;
+           int worstMovesBoardPosition = 0;
            if (isSkilled == false)
            {
-               for (int i = 0; i < 5; i++)
+               for (int winnerPosition = 0; winnerPosition < winnerMaxPosition; winnerPosition++)
                {
-                   if (this.winnerBoard[0].Moves > worstMoves)
+                   if (this.winnerBoard[winnerPosition].Moves > worstMoves)
                    {
-                       worstMovesChartPosition = i;
-                       worstMoves = this.winnerBoard[i].Moves;
+                       worstMovesBoardPosition = winnerPosition;
+                       worstMoves = this.winnerBoard[winnerPosition].Moves;
                    }
                }
            }
            if (player.Moves < worstMoves && isSkilled == false)
            {
-              // chart = ConsoleRenderer.AddToChart(this.winnerBoard, worstMovesChartPosition); // Need to fix it :(
+               AddToBoard(ConsoleRenderer.AddPlayerToBoard(worstMovesBoardPosition, player.Moves));
                isSkilled = true;
            }
            return isSkilled;
        }
 
-       public void AddToChart(Player player)
+       public void AddToBoard(Player player)
        {
           winnerBoard.Add(player);
        }

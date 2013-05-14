@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BalloonsPop5Game
+namespace BalloonsPop
 {
+    /// <summary>
+    /// Used to display information to the console.
+    /// </summary>
     class ConsoleRenderer : IRendered
     {
+        /// <summary>
+        /// Prints the field and game instructions to the console.
+        /// </summary>
+        /// <param name="field">The field that will be printed</param>
         public void PrintField(PlayField field)
         {
             Console.Clear();
@@ -49,6 +56,10 @@ namespace BalloonsPop5Game
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Prints the winner board in ascending order
+        /// </summary>
+        /// <param name="scoreBoard">The current score board that will be printed</param>
         public void PrintWinnerBoard(ScoreBoard scoreBoard)
         {
             if (scoreBoard.GetLength() == 0)
@@ -57,8 +68,14 @@ namespace BalloonsPop5Game
             }
             else
             {
+                byte scoreBoardWinnerCount = (byte)scoreBoard.GetLength();
+                if (scoreBoardWinnerCount > 5)
+                {
+                    scoreBoardWinnerCount = 5;
+                }
+               
                 Console.WriteLine("---------TOP FIVE Players-----------");
-                for (int winnerPosition = 0; winnerPosition < scoreBoard.GetLength(); ++winnerPosition)
+                for (int winnerPosition = 0; winnerPosition < scoreBoardWinnerCount; ++winnerPosition)
                 {
                     Player player = scoreBoard[winnerPosition];
                     Console.WriteLine("{2}.   {0} with {1} moves.", player.Name, player.Moves, winnerPosition + 1);
@@ -69,17 +86,27 @@ namespace BalloonsPop5Game
             Console.WriteLine();
         }
 
-        public static Player AddPlayerToChart(int chartPosition, int points)
+        /// <summary>
+        /// Used to get the player name from the console and current position
+        /// that he will be taking with the ammount of moves that he has made
+        /// </summary>
+        /// <param name="chartPosition">The position the player is getting placed in</param>
+        /// <param name="moves">The moves that the player has made</param>
+        /// <returns></returns>
+        public static Player AddPlayerToBoard(int chartPosition, int moves)
         {
             Console.WriteLine("Type in your name.");
             string userName = Console.ReadLine();
 
-            Player player = new Player(points, userName);
+            Player player = new Player(moves, userName);
 
             return player;
         }
 
-        public void PrintGameInstructions()
+        /// <summary>
+        /// Prints the game instructions to the console
+        /// </summary>
+        private void PrintGameInstructions()
         {
             Console.WriteLine("Welcome to “Balloons Pops” game. " +
             "Please try to pop the balloons. \nUse 'top' to view the top scoreboard,\n" +

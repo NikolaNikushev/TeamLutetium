@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BalloonsPop5Game
+namespace BalloonsPop
 {
     class Balloons
     {
         static void Main(string[] args)
         {
-            //Todo: Get the topFiveWinnersChart to the AddToBoard or scoreboard so it is created there
 
             PlayField field = new PlayField(5, 10);
-            ScoreBoard scoreboard = new ScoreBoard();
+            ScoreBoard scoreBoard = new ScoreBoard();
             Player player = new Player(0);
             ConsoleRenderer consoleRenderer = new ConsoleRenderer();
-            string[,] topFiveWinnersChart = new string[5, 2];
+            //string[,] topFiveWinnersChart = new string[5, 2];
             
             string commandInput = null;
 
@@ -31,12 +30,11 @@ namespace BalloonsPop5Game
                     case "RESTART":
                         field = new PlayField(5, 10);
                         player = new Player(0);
-                        consoleRenderer.PrintGameInstructions();
                         consoleRenderer.PrintField(field);
                         break;
 
                     case "TOP":
-                        consoleRenderer.PrintWinnerBoard(scoreboard);
+                        consoleRenderer.PrintWinnerBoard(scoreBoard);
                         break;
 
                     case "EXIT":
@@ -67,10 +65,10 @@ namespace BalloonsPop5Game
                             {
 
                                 Console.WriteLine("Gratz ! You completed the level in {0} moves.\n", player.Moves);
-                                if (scoreboard.CheckIfSkilled(player))
+                                if (scoreBoard.CheckIfSkilledAndAddToBoard(player))
                                 {
-                                    scoreboard.SortWinnerBoard(topFiveWinnersChart);
-                                    consoleRenderer.PrintWinnerBoard(scoreboard);
+                                    scoreBoard.SortWinnerBoard();
+                                    consoleRenderer.PrintWinnerBoard(scoreBoard);
 
                                     System.Threading.Thread.Sleep(3000);
                                 }

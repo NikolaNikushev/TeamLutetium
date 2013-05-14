@@ -31,6 +31,8 @@ namespace BalloonsPop5Game
                     case "RESTART":
                         field = new PlayField(5, 10);
                         player = new Player(0);
+                        consoleRenderer.PrintGameInstructions();
+                        consoleRenderer.PrintField(field);
                         break;
 
                     case "TOP":

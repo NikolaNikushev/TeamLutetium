@@ -51,16 +51,13 @@ namespace BalloonsPop
             this.field[row, column] = newValue;
         }
 
-       public bool MakeChangesToField(int row, int column)
+       public void MakeChangesToField(int row, int column)
        {
-           bool madeChanges = false;
            if (field[row, column] != 0)
            {
-               madeChanges = true;
                byte searchedTarget = field[row, column];
                PopNeighbouringBallons(field, row, column, searchedTarget);
            }
-           return madeChanges;
        }
 
        private byte[,] GenerateRandomField(byte rows, byte columns)

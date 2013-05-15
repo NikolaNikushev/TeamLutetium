@@ -22,9 +22,9 @@ namespace BalloonsPop
             this.Moves++;
         }
 
-        public Player(int moves)
+        public Player()
         {
-            this.Moves = moves;
+            this.Moves = 0;
         }
 
         //Used to sort the players on the winner board.

@@ -9,7 +9,7 @@ namespace BalloonsPop
 
        public ScoreBoard() 
        {
-
+           
        }
 
        public int GetLength()
@@ -26,10 +26,9 @@ namespace BalloonsPop
         }
 
         //Sorts the winner board by ascending order
-       public List<Player> SortWinnerBoard()
+       public void  SortWinnerBoard()
         {
-            winnerBoard.Sort();
-            return winnerBoard;
+            this.winnerBoard.Sort();
         }
 
         //Checks if the first 5 places are empty and adds the player to those places

@@ -32,7 +32,7 @@ namespace BalloonsPop
         }
 
         //Checks if the first 5 places are empty and adds the player to those places
-       public bool CheckIfSkilledAndAddToBoard(Player player)
+       public bool AddSkillfulPlayerToBoard(Player player, IUICommunicator communicator)
        {
            bool isSkilled = false;
            byte winnerMaxPosition = 5;
@@ -40,7 +40,7 @@ namespace BalloonsPop
            {
                if (this.winnerBoard.Count <= winnerMaxPosition || this.winnerBoard[boardPosition].Name == null)
                {
-                   AddToBoard(ConsoleRenderer.AddPlayerToBoard(boardPosition, player.Moves));
+                   AddToBoard(communicator.ProvidePlayerPersonalData(boardPosition, player.Moves));
                    isSkilled = true;
                    break;
                }
@@ -62,7 +62,7 @@ namespace BalloonsPop
            }
            if (player.Moves < worstMoves && isSkilled == false)
            {
-               AddToBoard(ConsoleRenderer.AddPlayerToBoard(worstMovesBoardPosition, player.Moves));
+               AddToBoard(communicator.ProvidePlayerPersonalData(worstMovesBoardPosition, player.Moves));
                isSkilled = true;
            }
            return isSkilled;

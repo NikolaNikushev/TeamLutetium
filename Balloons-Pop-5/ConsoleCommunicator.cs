@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BalloonsPop
 {
     /// <summary>
     /// Used to display information to the console.
     /// </summary>
-    class ConsoleRenderer : IRendered
+    public class ConsoleCommunicator : IUICommunicator
     {
         /// <summary>
         /// Prints the field and game instructions to the console.
         /// </summary>
         /// <param name="field">The field that will be printed</param>
-        public void PrintField(PlayField field)
+        public void RenderGameField(IPlayField field)
         {
             Console.Clear();
-            PrintGameInstructions();
+            Console.WriteLine("Welcome to “Balloons Pops” game. " +
+            "Please try to pop the balloons. \nUse 'top' to view the top scoreboard,\n" +
+            "'restart' to start a new game and 'exit' to quit the game. \n");
             Console.Write("    ");
             for (byte column = 0; column < field.GetLength(1); column++)
             {
@@ -60,7 +60,7 @@ namespace BalloonsPop
         /// Prints the winner board in ascending order
         /// </summary>
         /// <param name="scoreBoard">The current score board that will be printed</param>
-        public void PrintWinnerBoard(ScoreBoard scoreBoard)
+        public void RenderWinnerBoard(ScoreBoard scoreBoard)
         {
             if (scoreBoard.GetLength() == 0)
             {
@@ -93,7 +93,7 @@ namespace BalloonsPop
         /// <param name="chartPosition">The position the player is getting placed in</param>
         /// <param name="moves">The moves that the player has made</param>
         /// <returns></returns>
-        public static Player AddPlayerToBoard(int chartPosition, int moves)
+        public Player ProvidePlayerPersonalData(int chartPosition, int moves)
         {
             Console.WriteLine("Type in your name.");
             string userName = Console.ReadLine();
@@ -103,14 +103,26 @@ namespace BalloonsPop
             return player;
         }
 
-        /// <summary>
-        /// Prints the game instructions to the console
-        /// </summary>
-        private void PrintGameInstructions()
+        public string ProvidePlayerCommand()
         {
-            Console.WriteLine("Welcome to “Balloons Pops” game. " +
-            "Please try to pop the balloons. \nUse 'top' to view the top scoreboard,\n" +
-            "'restart' to start a new game and 'exit' to quit the game. \n");
+            Console.WriteLine("Command: ");
+            string commandInput = Console.ReadLine();
+            Console.WriteLine();
+            commandInput = commandInput.ToLower().Trim();
+            if (commandInput.Length>1)
+            {
+                commandInput = commandInput.Substring(0, 1).ToUpper() + commandInput.Substring(1);   
+            }
+
+            return commandInput;
+        }
+
+        /// <summary>
+        /// Prints a specific message on the console designated to give instructions to player
+        /// </summary>
+        public void PrintUserMessage(string message)
+        {
+            Console.WriteLine(message);
         }
     }
 }

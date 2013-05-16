@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BalloonsPop
 {
-    class Balloons
+    class BalloonsMain
     {
         private const byte GAMEROWS = 5;
         private const byte GAMECOLS = 10;
@@ -11,10 +11,6 @@ namespace BalloonsPop
         {
             Engine engine = new Engine(GAMEROWS, GAMECOLS);
             engine.RunGame();
-            while (engine.IsRunning)
-            {
-                engine.ReadCommand();
-            }  
         }
     }
 }

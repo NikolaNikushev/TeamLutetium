@@ -41,8 +41,6 @@ namespace TestBalloonPop5Game
             engine.ReadAction();
             Engine.CurrentAction expected = Engine.CurrentAction.PrintingTopBoard;
             Assert.AreEqual(expected, engine.currentAction);
-
-          
         }
 
         [TestMethod]

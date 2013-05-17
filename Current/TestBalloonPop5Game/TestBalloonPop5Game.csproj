@@ -69,6 +69,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConsoleCommunicatorUnitTest.cs" />
     <Compile Include="EngineUnitTest.cs" />
+    <Compile Include="PlayerUnitTest.cs" />
+    <Compile Include="ScoreboardUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

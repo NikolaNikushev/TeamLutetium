@@ -38,11 +38,6 @@ namespace BalloonsPop
                     {
                         return true;
                     }
-                    else return false;
-                }
-                else
-                {
-                    return false;
                 }
             }
             return false;

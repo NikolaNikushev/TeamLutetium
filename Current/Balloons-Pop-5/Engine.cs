@@ -46,17 +46,6 @@ namespace BalloonsPop
             }
         }
 
-        public enum CurrentAction
-        {
-            IsRunning,
-            IsWaitingForValidInput,
-            IsNotRunning,
-            PrintingTopBoard,
-            Restarting,
-            CheckingCoordinates,
-            FinishedGame
-        }
-
         public virtual void RunGame()
         {
             communicator.RenderGameField(field);

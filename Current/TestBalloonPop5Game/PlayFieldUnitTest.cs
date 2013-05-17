@@ -97,5 +97,46 @@ namespace TestBalloonPop5Game
             int cols = field.GetLength(2);
             Assert.AreEqual(3, cols);
         }
+
+        [TestMethod]
+        public void TestMakeChangesToField()
+        {
+            PlayField field= new PlayField(5,5,1);
+            field.MakeChangesToField(2,2);
+            bool allBubblesPopped = true;
+            for (int i = 0; i < field.GetLength(0); i++)
+			{
+			    for (int j = 0; j < field.GetLength(1); j++)
+			    {
+			        if (field[i,j]!=0)
+	                {
+		                allBubblesPopped=false;
+                        break;
+	                }
+			    }
+			}
+
+            Assert.AreEqual(true, allBubblesPopped);
+        }
+
+        [TestMethod]
+        public void TestClearLevelEmpty()
+        {
+            PlayField field = new PlayField(5, 5, 1);
+            field.MakeChangesToField(2, 2);
+            bool allBubblesPopped = field.ClearedLevel();
+
+            Assert.AreEqual(true, allBubblesPopped);
+        }
+
+        [TestMethod]
+        public void TestClearLevelNotEmpty()
+        {
+            PlayField field = new PlayField(5, 5, 20);
+            field.MakeChangesToField(0, 0);
+            bool allBubblesPopped = field.ClearedLevel();
+
+            Assert.AreEqual(false, allBubblesPopped);
+        }
     }
 }

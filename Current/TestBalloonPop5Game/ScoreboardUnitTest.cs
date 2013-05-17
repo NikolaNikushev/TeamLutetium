@@ -17,19 +17,23 @@ namespace TestBalloonPop5Game
         [TestMethod]
         public void AddPlayerToScoreBoard()
         {
+            Engine engine = new Engine(5, 10);
             ScoreBoard scoreBoard = new ScoreBoard();
             Assert.IsNotNull(scoreBoard);
 
             Player misho = new Player(0, "misho");
             Assert.IsNotNull(misho);
 
-            scoreBoard.AddToBoard(misho);
+            Console.SetIn(new System.IO.StringReader("misho"));
+            scoreBoard.AddSkillfulPlayerToBoard(misho, engine.Communicator);
+            Assert.AreEqual("misho", misho.Name);
             Assert.AreEqual(1, scoreBoard.GetLength());
         }
 
         [TestMethod]
         public void AddPlayersToScoreBoard()
         {
+            Engine engine = new Engine(5, 10);
             ScoreBoard scoreBoard = new ScoreBoard();
             Assert.IsNotNull(scoreBoard);
 
@@ -39,22 +43,32 @@ namespace TestBalloonPop5Game
             Player stefan = new Player();
             Assert.IsNotNull(stefan);
 
-            Player lora = new Player(0, "Carl");
-            Assert.IsNotNull(lora);
+            Player carl = new Player(0, "Carl");
+            Assert.IsNotNull(carl);
 
             Player pepo = new Player(0, "Pepito");
             Assert.IsNotNull(pepo);
 
-            scoreBoard.AddToBoard(misho);
-            scoreBoard.AddToBoard(stefan);
-            scoreBoard.AddToBoard(lora);
-            scoreBoard.AddToBoard(pepo);
+            Console.SetIn(new System.IO.StringReader("misho"));
+            scoreBoard.AddSkillfulPlayerToBoard(misho, engine.Communicator);
+            Assert.AreEqual("misho", misho.Name);
+
+            Console.SetIn(new System.IO.StringReader(""));
+            scoreBoard.AddSkillfulPlayerToBoard(stefan, engine.Communicator);
+            Assert.AreEqual(null, stefan.Name);
+
+            Console.SetIn(new System.IO.StringReader("carl"));
+            scoreBoard.AddSkillfulPlayerToBoard(carl, engine.Communicator);
+
+            Console.SetIn(new System.IO.StringReader("pepo"));
+            scoreBoard.AddSkillfulPlayerToBoard(pepo, engine.Communicator);
             Assert.AreEqual(4, scoreBoard.GetLength());
         }
 
         [TestMethod]
         public void AddPlayersToScoreBoardAndSort()
         {
+            Engine engine = new Engine(5, 10);
             ScoreBoard scoreBoard = new ScoreBoard();
             Assert.IsNotNull(scoreBoard);
 
@@ -64,22 +78,32 @@ namespace TestBalloonPop5Game
             Player noNamePlayer = new Player();
             Assert.IsNotNull(noNamePlayer);
 
-            Player lora = new Player(1, "Carl");
-            Assert.IsNotNull(lora);
+            Player carl = new Player(1, "Carl");
+            Assert.IsNotNull(carl);
 
             Player pepo = new Player(5, "Pepito");
             Assert.IsNotNull(pepo);
 
-            scoreBoard.AddToBoard(misho);
-            scoreBoard.AddToBoard(noNamePlayer);
-            scoreBoard.AddToBoard(lora);
-            scoreBoard.AddToBoard(pepo);
+            Console.SetIn(new System.IO.StringReader("misho"));
+            scoreBoard.AddSkillfulPlayerToBoard(misho, engine.Communicator);
+            Assert.AreEqual("misho", misho.Name);
+
+            Console.SetIn(new System.IO.StringReader(""));
+            scoreBoard.AddSkillfulPlayerToBoard(noNamePlayer, engine.Communicator);
+
+            Console.SetIn(new System.IO.StringReader("Carl"));
+            scoreBoard.AddSkillfulPlayerToBoard(carl, engine.Communicator);
+
+            Console.SetIn(new System.IO.StringReader("Pepito"));
+            scoreBoard.AddSkillfulPlayerToBoard(pepo, engine.Communicator);
+
             Assert.AreEqual(4, scoreBoard.GetLength());
             scoreBoard.SortWinnerBoard();
-            Assert.AreEqual(noNamePlayer, scoreBoard[0]);
-            Assert.AreEqual(lora, scoreBoard[1]);
-            Assert.AreEqual(pepo, scoreBoard[2]);
-            Assert.AreEqual(misho, scoreBoard[3]);
+
+            Assert.AreEqual(noNamePlayer.Name, scoreBoard[0].Name);
+            Assert.AreEqual(carl.Name, scoreBoard[1].Name);
+            Assert.AreEqual(pepo.Name, scoreBoard[2].Name);
+            Assert.AreEqual(misho.Name, scoreBoard[3].Name);
         }
 
         [TestMethod]

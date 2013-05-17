@@ -12,7 +12,7 @@ namespace TestBalloonPop5Game
     {
         [TestMethod]
         public void RenderGameField()
-        {
+    {
             Engine engine = new Engine(5, 10);
             engine.RunGame();
             Console.SetIn(new System.IO.StringReader("top"));
@@ -22,7 +22,6 @@ namespace TestBalloonPop5Game
             Assert.AreEqual(expected, engine.currentAction);
 
             Mock.Assert(() => engine.Communicator.RenderGameField(engine.Field), Occurs.AtLeastOnce());
-           
         }
     }
 }

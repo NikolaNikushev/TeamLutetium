@@ -141,5 +141,25 @@ namespace TestBalloonPop5Game
             expected = CurrentAction.FinishedGame;
             Assert.AreEqual(expected, engine.currentAction);
         }
+
+        [TestMethod]
+        public void CreateEngineAndShowTopBoardWithOnePlayer()
+        {
+            Engine engine = new Engine(5, 10);
+            engine.RunGame();
+
+            Player pepo = new Player(5, "Pepito");
+            Assert.IsNotNull(pepo);
+
+            Console.SetIn(new System.IO.StringReader("Pepito"));
+
+            engine.ScoreBoard.AddSkillfulPlayerToBoard(pepo, engine.Communicator);
+            Console.SetIn(new System.IO.StringReader("top"));
+            engine.ReadAction();
+            CurrentAction expected = CurrentAction.PrintingTopBoard;
+            Assert.AreEqual(expected, engine.currentAction);
+            int scoreBoardPlayers = engine.ScoreBoard.GetLength();
+            Assert.AreEqual(1, scoreBoardPlayers);
+        }
     }
 }

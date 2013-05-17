@@ -11,6 +11,11 @@ namespace BalloonsPop
         {
             Engine engine = new Engine(GAMEROWS, GAMECOLS);
             engine.RunGame();
+            while (engine.currentAction != Engine.CurrentAction.IsNotRunning)
+            {
+                engine.ReadAction();
+            }
+
         }
     }
 }

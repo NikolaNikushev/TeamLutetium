@@ -5,6 +5,7 @@ namespace BalloonsPop
 {
     public class Engine
     {
+        public CurrentAction currentAction;
         private IPlayField field;
         private ScoreBoard scoreBoard;
         private Player player;
@@ -20,17 +21,57 @@ namespace BalloonsPop
             parser = new CommandParser();
         }
 
+        public IUICommunicator Communicator
+        {
+            get
+            {
+                return this.communicator;
+            }
+                
+        }
+
+        public IPlayField Field
+        {
+            get
+            {
+                return this.field;
+            }
+        }
+
+        public ScoreBoard ScoreBoard
+        {
+            get
+            {
+                return this.scoreBoard;
+            }
+        }
+
+        public enum CurrentAction
+        {
+            IsRunning,
+            IsWaitingForValidInput,
+            IsNotRunning,
+            PrintingTopBoard,
+            Restarting,
+            CheckingCoordinates,
+            FinishedGame
+        }
+
         public virtual void RunGame()
         {
-            Command commandInput = Command.Invalid;
-            communicator.RenderGameField(field);
+            this.currentAction = CurrentAction.IsRunning;
+        }
 
-            while (commandInput != Command.Exit)
-            {
-                string commandInputString = communicator.ProvidePlayerCommand();
-                commandInput = parser.ParseCommand(commandInputString, field);
-                HandleCommand(commandInput, commandInputString);
-            }
+        public void ReadAction()
+        {
+            communicator.RenderGameField(field);
+            Command commandInput = Command.Invalid;
+
+            this.currentAction = CurrentAction.IsRunning;
+            string commandInputString = communicator.ProvidePlayerCommand();
+            commandInput = parser.ParseCommand(commandInputString, field);
+            HandleCommand(commandInput, commandInputString);
+
         }
 
         private void HandleCommand(Command commandInput, string commandInputString)
@@ -38,22 +79,26 @@ namespace BalloonsPop
             switch (commandInput)
             {
                 case Command.Restart:
+                    this.currentAction = CurrentAction.Restarting;
                     field = new PlayField(5, 10);
                     player = new Player();
                     communicator.RenderGameField(field);
                     break;
 
                 case Command.Top:
+                    this.currentAction = CurrentAction.PrintingTopBoard;
                     communicator.RenderWinnerBoard(scoreBoard);
                     break;
 
                 case Command.Exit:
+                    this.currentAction = CurrentAction.IsNotRunning;
                     communicator.PrintUserMessage("Good Bye! ");
                     System.Threading.Thread.Sleep(500);
                     break;
 
                 case Command.CoordinateForParsing:
-                    int userInputRow =parser.ParseCommandToRow(commandInputString);
+                    this.currentAction = CurrentAction.CheckingCoordinates;
+                    int userInputRow = parser.ParseCommandToRow(commandInputString);
                     int userInputColumn = parser.ParseCommandToCol(commandInputString);
 
                     field.MakeChangesToField(userInputRow, userInputColumn);
@@ -61,11 +106,13 @@ namespace BalloonsPop
                     if (field.ClearedLevel()) //if field is empty
                     {
                         FinalizeGame();
+                        this.currentAction = CurrentAction.FinishedGame;
                     }
                     communicator.RenderGameField(field);
                     break;
 
                 case Command.Invalid:
+                    this.currentAction = CurrentAction.IsWaitingForValidInput;
                     if (parser.CheckIfCommandIsCoordinate(commandInputString, field) && !parser.CheckPoppableBalloon(commandInputString, field))
                     {
                         communicator.PrintUserMessage("Illegal move: cannot pop missing ballon!\n");
@@ -77,7 +124,7 @@ namespace BalloonsPop
                     break;
             }
         }
-  
+
         private void FinalizeGame()
         {
             communicator.PrintUserMessage(string.Format("Gratz ! You completed the level in {0} moves.\n", player.Moves));

@@ -32,6 +32,12 @@ namespace BalloonsPop
             this.field = GenerateRandomField(rowsNumber, colsNumber);
         }
 
+        /// <summary>
+        /// Used as an indexsator for the field to get it's value.
+        /// </summary>
+        /// <param name="row">The row that we are looking in</param>
+        /// <param name="col">The column that we are looking in</param>
+        /// <returns>The value of the field at the row and column</returns>
         public byte this[int row, int col]
         {
             get
@@ -40,6 +46,11 @@ namespace BalloonsPop
             }
         }
 
+        /// <summary>
+        /// Gets the number of rows of columns depending on the given dimension .
+        /// </summary>
+        /// <param name="dimension">The dimention of the field (0 - rows; 1 - columns).</param>
+        /// <returns>The number of rows or columns of the field, depending on the dimension.</returns>
         public int GetLength(byte dimension)
         {
             if (dimension == 0 || dimension == 1)
@@ -105,6 +116,13 @@ namespace BalloonsPop
             }
         }
 
+        /// <summary>
+        /// Generates a random field by given rows and columns ammount.
+        /// The values of each cell is generated at random.
+        /// </summary>
+        /// <param name="rows">The ammount of rows that we want.</param>
+        /// <param name="columns">The ammount of the columns that we want.</param>
+        /// <returns>The new generated field with random values of it's rows and columns </returns>
         private byte[,] GenerateRandomField(byte rows, byte columns)
         {
             if (rows <= 0 || columns <= 0)
@@ -125,6 +143,15 @@ namespace BalloonsPop
             return randomField;
         }
 
+        /// <summary>
+        /// Checks the field if there is a balloon at the given position.
+        /// If there is a balloon with the value of that cell, that cell value gets
+        /// transformed to 0 and all neighbouring cells with the same values are "poped".
+        /// </summary>
+        /// <param name="field">The field that we are using.</param>
+        /// <param name="row">The row that we are looking into.</param>
+        /// <param name="column">The column that we are looking into.</param>
+        /// <param name="searchedItem">The value of the cell that is at the field's row and column</param>
         private static void PopNeighbouringBallons(byte[,] field, int row, int column, int searchedItem)
         {
             try

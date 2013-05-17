@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace BalloonsPop
 {
+    /// <summary>
+    /// Represents interface for the game field
+    /// </summary>
     public interface IPlayField
     {
         byte this[int row, int col]

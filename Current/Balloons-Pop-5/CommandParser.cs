@@ -3,8 +3,18 @@ using System.Linq;
 
 namespace BalloonsPop
 {
+    /// <summary>
+    /// Class that makes operations over a user command
+    /// </summary>
     public class CommandParser:ICommandParser
     {
+        /// <summary>
+        /// Method used to parse command from string to Command Type
+        /// </summary>
+        /// <param name="commandInput">String containing the command from user. 
+        /// If it is not a coordinate, the first letter is capital, the rest are lower case.</param>
+        /// <param name="field">Parameter of type PlayField, representing the playfield of the game</param>
+        /// <returns>Returns the parsed command- a Command Type parameter.</returns>
         public Command ParseCommand(string commandInput, IPlayField field)
         {
             bool isValidCoordinate = CheckIfCommandIsCoordinate(commandInput, field);
@@ -24,6 +34,13 @@ namespace BalloonsPop
             }
         }
 
+        /// <summary>
+        /// Method that checks if a given command represents a valid coordinate in the game field
+        /// </summary>
+        /// <param name="commandInput">String containing the command from user. 
+        /// If it is not a coordinate, the first letter is capital, the rest are lower case.</param>
+        /// <param name="field">Parameter of type PlayField, representing the playfield of the game</param>
+        /// <returns>Returns true if command is a valid coordinate and false, if it is not</returns>
         public bool CheckIfCommandIsCoordinate(string commandInput, IPlayField field)
         {
             string[] commandWords = commandInput.Split(new Char[]{' ', ',', '_', '.'}, StringSplitOptions.RemoveEmptyEntries);
@@ -44,6 +61,14 @@ namespace BalloonsPop
             return false;
         }
 
+        /// <summary>
+        /// Method that checks if commandInput given by the user represents a balloon in the 
+        /// field which is poppable(different than zero)
+        /// </summary>
+        /// <param name="commandInput">String containing the command from user. 
+        /// If it is not a coordinate, the first letter is capital, the rest are lower case.</param>
+        /// <param name="field">Parameter of type PlayField, representing the playfield of the game</param>
+        /// <returns>Returns true if the balloon is poppable(different than zero and false if not)</returns>
         public bool CheckPoppableBalloon(string commandInput, IPlayField field)
         {
             int row = ParseCommandToRow(commandInput);
@@ -58,6 +83,12 @@ namespace BalloonsPop
             }
         }
 
+        /// <summary>
+        /// Parses a the inputCommandString to extend the value of row
+        /// </summary>
+        /// <param name="commandInput">String containing the command from user. 
+        /// If it is not a coordinate, the first letter is capital, the rest are lower case.</param>
+        /// <returns>Integer representing the value of coordinate row</returns>
         public int ParseCommandToRow(string inputCommandString)
         {
             string[] coordinates = inputCommandString.Split(new Char[] { ' ', ',', '_', '.' }, StringSplitOptions.RemoveEmptyEntries);
@@ -67,6 +98,12 @@ namespace BalloonsPop
             return row;
         }
 
+        /// <summary>
+        /// Parses a the inputCommandString to extend the value of column
+        /// </summary>
+        /// <param name="commandInput">String containing the command from user. 
+        /// If it is not a coordinate, the first letter is capital, the rest are lower case.</param>
+        /// <returns>Integer representing the value of coordinate column</returns>
         public int ParseCommandToCol(string inputCommandString)
         {
             string[] coordinates = inputCommandString.Split(new Char[] { ' ', ',', '_', '.' }, StringSplitOptions.RemoveEmptyEntries);

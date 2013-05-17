@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BalloonsPop
 {
+    /// <summary>
+    /// Enumeration containing different options 
+    /// for command type
+    /// </summary>
     public enum Command
     {
         Restart,

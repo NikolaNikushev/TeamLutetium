@@ -4,11 +4,23 @@ using System.Linq;
 
 namespace BalloonsPop
 {
+    /// <summary>
+    /// Class that represents the playfield of the game
+    /// </summary>
     public class PlayField : IPlayField
     {
         private byte[,] field;
         public byte MaxBubbleNumber{get; private set;}
 
+        /// <summary>
+        /// Constructor for the class PlayField
+        /// Creates a field as a matrix, having rows, columns and 
+        /// the maximum value a ballon in the playfield could have.
+        /// The matrix is created on via a random generator
+        /// </summary>
+        /// <param name="rowsNumber">Number of rows in field</param>
+        /// <param name="colsNumber">Number of columns in field</param>
+        /// <param name="maxBubbleNumber">Maximal value of bubbles in field</param>
         public PlayField(byte rowsNumber, byte colsNumber, byte maxBubbleNumber=4)
         {
             if (maxBubbleNumber == 0)
@@ -40,6 +52,11 @@ namespace BalloonsPop
             }
         }
 
+        /// <summary>
+        /// Makes balloons on top to fall if there are
+        /// no ballons beneath
+        /// </summary>
+        /// <returns>Returns true if there are no more ballons to fall and false if there are ballons left</returns>
         public bool ClearedLevel()
         {
             bool isEmpty = true;
@@ -73,7 +90,12 @@ namespace BalloonsPop
             return isEmpty;
         }
 
-
+        /// <summary>
+        /// Removes all ballons neighbouring the balloon that the player has shot,
+        /// plus the baloons that are neighbouring the neighbours and so on
+        /// </summary>
+        /// <param name="row">Number of shot row</param>
+        /// <param name="column">Number of shot column</param>
         public void MakeChangesToField(int row, int column)
         {
             if (field[row, column] != 0)

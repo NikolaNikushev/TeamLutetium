@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BalloonsPop
 {
+    /// <summary>
+    /// Interface determing operations over a userCommand
+    /// </summary>
     public interface ICommandParser
     {
         Command ParseCommand(string commandInput, IPlayField field);

@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BalloonsPop
 {
+    /// <summary>
+    /// Enumeration that gives option for the 
+    /// current state of the engine
+    /// </summary>
     public enum CurrentAction
     {
         IsRunning,

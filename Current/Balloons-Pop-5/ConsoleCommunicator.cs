@@ -73,7 +73,7 @@ namespace BalloonsPop
                 {
                     scoreBoardWinnerCount = 5;
                 }
-               
+
                 Console.WriteLine("---------TOP FIVE Players-----------");
                 for (int winnerPosition = 0; winnerPosition < scoreBoardWinnerCount; ++winnerPosition)
                 {
@@ -103,17 +103,21 @@ namespace BalloonsPop
             return player;
         }
 
+        /// <summary>
+        /// Asks for the command and checks if the command provided 
+        /// is longer than 0 characters.
+        /// </summary>
+        /// <returns>The command that is provided</returns>
         public string ProvidePlayerCommand()
         {
             Console.WriteLine("Command: ");
             string commandInput = Console.ReadLine();
             Console.WriteLine();
             commandInput = commandInput.ToLower().Trim();
-            if (commandInput.Length>1)
+            if (commandInput.Length > 1)
             {
-                commandInput = commandInput.Substring(0, 1).ToUpper() + commandInput.Substring(1);   
+                commandInput = commandInput.Substring(0, 1).ToUpper() + commandInput.Substring(1);
             }
-
             return commandInput;
         }
 

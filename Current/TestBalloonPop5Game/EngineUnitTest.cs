@@ -16,7 +16,7 @@ namespace TestBalloonPop5Game
         {
             Engine engine = new Engine(5, 10);
             engine.RunGame();
-            Engine.CurrentAction expected = Engine.CurrentAction.IsRunning;
+            CurrentAction expected = CurrentAction.IsRunning;
             Assert.AreEqual(expected, engine.currentAction);
         }
 
@@ -27,7 +27,7 @@ namespace TestBalloonPop5Game
             engine.RunGame();
             Console.SetIn(new System.IO.StringReader("exit"));
             engine.ReadAction();
-            Engine.CurrentAction expected = Engine.CurrentAction.IsNotRunning;
+            CurrentAction expected = CurrentAction.IsNotRunning;
 
             Assert.AreEqual(expected, engine.currentAction);
         }
@@ -39,7 +39,7 @@ namespace TestBalloonPop5Game
             engine.RunGame();
             Console.SetIn(new System.IO.StringReader("top"));
             engine.ReadAction();
-            Engine.CurrentAction expected = Engine.CurrentAction.PrintingTopBoard;
+            CurrentAction expected = CurrentAction.PrintingTopBoard;
             Assert.AreEqual(expected, engine.currentAction);
         }
 
@@ -50,7 +50,7 @@ namespace TestBalloonPop5Game
             engine.RunGame();
             Console.SetIn(new System.IO.StringReader("restart"));
             engine.ReadAction();
-            Engine.CurrentAction expected = Engine.CurrentAction.Restarting;
+            CurrentAction expected = CurrentAction.Restarting;
 
             Assert.AreEqual(expected, engine.currentAction);
         }
@@ -62,7 +62,7 @@ namespace TestBalloonPop5Game
             engine.RunGame();
             Console.SetIn(new System.IO.StringReader("4 4"));
             engine.ReadAction();
-            Engine.CurrentAction expected = Engine.CurrentAction.CheckingCoordinates;
+            CurrentAction expected = CurrentAction.CheckingCoordinates;
             Assert.AreEqual(expected, engine.currentAction);
 
             Console.SetIn(new System.IO.StringReader("4 8"));
@@ -85,7 +85,7 @@ namespace TestBalloonPop5Game
             engine.RunGame();
             Console.SetIn(new System.IO.StringReader("44 9"));
             engine.ReadAction();
-            Engine.CurrentAction expected = Engine.CurrentAction.IsWaitingForValidInput;
+            CurrentAction expected = CurrentAction.IsWaitingForValidInput;
             Assert.AreEqual(expected, engine.currentAction);
 
             Console.SetIn(new System.IO.StringReader("aa bb"));
@@ -123,7 +123,7 @@ namespace TestBalloonPop5Game
                 Console.SetIn(new System.IO.StringReader("4 4"));
                 engine.ReadAction();
             }
-            Engine.CurrentAction expected = Engine.CurrentAction.IsWaitingForValidInput;
+            CurrentAction expected = CurrentAction.IsWaitingForValidInput;
             Assert.AreEqual(expected, engine.currentAction);
             for (int i = 0; i < 5; i++)
             {
@@ -131,13 +131,13 @@ namespace TestBalloonPop5Game
                 {
                     Console.SetIn(new System.IO.StringReader(i + " " + j));
                     engine.ReadAction();
-                    if (engine.currentAction == Engine.CurrentAction.FinishedGame)
+                    if (engine.currentAction == CurrentAction.FinishedGame)
                     {
                         break;
                     }
                 }
             }
-            expected = Engine.CurrentAction.FinishedGame;
+            expected = CurrentAction.FinishedGame;
             Assert.AreEqual(expected, engine.currentAction);
         }
     }

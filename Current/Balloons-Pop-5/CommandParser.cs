@@ -26,7 +26,7 @@ namespace BalloonsPop
 
         public bool CheckIfCommandIsCoordinate(string commandInput, IPlayField field)
         {
-            string[] commandWords = commandInput.Split(' ');
+            string[] commandWords = commandInput.Split(new Char[]{' ', ',', '_', '.'}, StringSplitOptions.RemoveEmptyEntries);
             if (commandWords.Length == 2)
             {
                 byte row = 0;
@@ -40,6 +40,7 @@ namespace BalloonsPop
                     }
                 }
             }
+
             return false;
         }
 
@@ -59,7 +60,7 @@ namespace BalloonsPop
 
         public int ParseCommandToRow(string inputCommandString)
         {
-            string[] coordinates = inputCommandString.Split(' ');
+            string[] coordinates = inputCommandString.Split(new Char[] { ' ', ',', '_', '.' }, StringSplitOptions.RemoveEmptyEntries);
             int row = 0;
             int.TryParse(coordinates[0], out row);
 
@@ -68,7 +69,7 @@ namespace BalloonsPop
 
         public int ParseCommandToCol(string inputCommandString)
         {
-            string[] coordinates = inputCommandString.Split(' ');
+            string[] coordinates = inputCommandString.Split(new Char[] { ' ', ',', '_', '.' }, StringSplitOptions.RemoveEmptyEntries);
             int col = 0;
             int.TryParse(coordinates[1], out col);
 

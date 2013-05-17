@@ -109,7 +109,6 @@ namespace BalloonsPop
                         communicator.PrintUserMessage("Wrong input ! Try Again !\n");
                     }
                     break;
-
             }
         }
 

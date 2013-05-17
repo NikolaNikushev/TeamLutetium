@@ -17,7 +17,7 @@ namespace TestBalloonPop5Game
             engine.RunGame();
             Console.SetIn(new System.IO.StringReader("top"));
             engine.ReadAction();
-            Engine.CurrentAction expected = Engine.CurrentAction.PrintingTopBoard;
+            CurrentAction expected = CurrentAction.PrintingTopBoard;
 
             Assert.AreEqual(expected, engine.currentAction);
 

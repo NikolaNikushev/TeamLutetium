@@ -83,6 +83,7 @@ namespace TestBalloonPop5Game
         {
             Engine engine = new Engine(5, 10);
             engine.RunGame();
+
             Console.SetIn(new System.IO.StringReader("44 9"));
             engine.ReadAction();
             CurrentAction expected = CurrentAction.IsWaitingForValidInput;

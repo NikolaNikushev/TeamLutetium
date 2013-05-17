@@ -154,6 +154,7 @@ namespace TestBalloonPop5Game
             Console.SetIn(new System.IO.StringReader("misho"));
             scoreBoard.AddSkillfulPlayerToBoard(misho, engine.Communicator);
             Assert.AreEqual("misho", misho.Name);
+
             Console.SetIn(new System.IO.StringReader(""));
             scoreBoard.AddSkillfulPlayerToBoard(noNamePlayer, engine.Communicator);
 
@@ -228,6 +229,7 @@ namespace TestBalloonPop5Game
             Console.SetIn(new System.IO.StringReader("misho"));
             scoreBoard.AddSkillfulPlayerToBoard(misho, engine.Communicator);
             Assert.AreEqual("misho", misho.Name);
+
             Console.SetIn(new System.IO.StringReader(""));
             scoreBoard.AddSkillfulPlayerToBoard(noNamePlayer, engine.Communicator);
 

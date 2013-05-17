@@ -59,19 +59,17 @@ namespace BalloonsPop
 
         public virtual void RunGame()
         {
+            communicator.RenderGameField(field);
             this.currentAction = CurrentAction.IsRunning;
         }
 
         public void ReadAction()
-        {
-            communicator.RenderGameField(field);
+        {  
             Command commandInput = Command.Invalid;
-
             this.currentAction = CurrentAction.IsRunning;
             string commandInputString = communicator.ProvidePlayerCommand();
             commandInput = parser.ParseCommand(commandInputString, field);
             HandleCommand(commandInput, commandInputString);
-
         }
 
         private void HandleCommand(Command commandInput, string commandInputString)
@@ -122,6 +120,7 @@ namespace BalloonsPop
                         communicator.PrintUserMessage("Wrong input ! Try Again !\n");
                     }
                     break;
+
             }
         }
 

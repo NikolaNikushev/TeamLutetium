@@ -17,6 +17,24 @@ namespace TestBalloonPop5Game
         }
 
         [TestMethod]
+        public void CreateAPlayerAndIncreaseHisScore()
+        {
+            Player player = new Player();
+            Assert.IsNotNull(player);
+            Assert.AreEqual(0, player.Moves);
+            Assert.IsNull(player.Name);
+
+            player.UpdateMovesAmmount();
+            Assert.AreEqual(1, player.Moves);
+
+            player = new Player(3, "Gosho");
+            Assert.AreEqual(3, player.Moves);
+
+            player.UpdateMovesAmmount();
+            Assert.AreEqual(4, player.Moves);
+        }
+
+        [TestMethod]
         public void CreateAPlayerWithName()
         {
             Player player = new Player(0, "bob");

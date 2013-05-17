@@ -45,7 +45,7 @@ namespace BalloonsPop
                    break;
                }
            }
-
+           
            //Checks if the player current score beats his previous score and adds him to the top 5 board
            int worstMoves = 0;
            int worstMovesBoardPosition = 0;

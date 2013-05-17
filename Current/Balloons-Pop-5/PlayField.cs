@@ -40,11 +40,6 @@ namespace BalloonsPop
             }
         }
 
-        //public void RespondToOuterChange(byte row, byte column, byte newValue)
-        //{
-        //    this.field[row, column] = newValue;
-        //}
-
         public bool ClearedLevel()
         {
             bool isEmpty = true;

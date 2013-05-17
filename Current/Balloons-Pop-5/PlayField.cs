@@ -7,18 +7,17 @@ namespace BalloonsPop
     public class PlayField : IPlayField
     {
         private byte[,] field;
+        public byte MaxBubbleNumber{get; private set;}
 
-        public PlayField(byte rowsNumber, byte colsNumber)
+        public PlayField(byte rowsNumber, byte colsNumber, byte maxBubbleNumber=4)
         {
-            this.field = GenerateRandomField(rowsNumber, colsNumber);
-        }
-
-        public byte[,] Field
-        {
-            get
+            if (maxBubbleNumber == 0)
             {
-                return this.field;
+                throw new ArgumentException("Cannot create a field with maxBubbleNumber"+ 
+                    " less or equal to zero");
             }
+            this.MaxBubbleNumber = maxBubbleNumber;
+            this.field = GenerateRandomField(rowsNumber, colsNumber);
         }
 
         public byte this[int row, int col]
@@ -41,10 +40,10 @@ namespace BalloonsPop
             }
         }
 
-        public void RespondToOuterChange(byte row, byte column, byte newValue)
-        {
-            this.field[row, column] = newValue;
-        }
+        //public void RespondToOuterChange(byte row, byte column, byte newValue)
+        //{
+        //    this.field[row, column] = newValue;
+        //}
 
         public bool ClearedLevel()
         {
@@ -91,13 +90,17 @@ namespace BalloonsPop
 
         private byte[,] GenerateRandomField(byte rows, byte columns)
         {
+            if (rows <= 0 || columns <= 0)
+            {
+                throw new ArgumentException("Cannot create a playfield with zero or negative rows or cols");
+            }
             byte[,] randomField = new byte[rows, columns];
             Random randomNumberGenerator = new Random();
             for (byte row = 0; row < rows; row++)
             {
                 for (byte column = 0; column < columns; column++)
                 {
-                    byte currentNumber = (byte)randomNumberGenerator.Next(1, 5);
+                    byte currentNumber = (byte)randomNumberGenerator.Next(1, this.MaxBubbleNumber+1);
                     randomField[row, column] = currentNumber;
                 }
             }

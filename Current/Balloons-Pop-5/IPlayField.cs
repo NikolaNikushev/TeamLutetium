@@ -9,7 +9,7 @@ namespace BalloonsPop
         {
             get;
         }
-        void RespondToOuterChange(byte row, byte column, byte newValue);
+        //void RespondToOuterChange(byte row, byte column, byte newValue);
         void MakeChangesToField(int row, int column);
         int GetLength(byte dimension);
         bool ClearedLevel();
